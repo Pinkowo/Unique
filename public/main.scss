@@ -48,6 +48,24 @@ body {
             width: 30px;
             border-radius: 30px;
             cursor: pointer;
+            margin-right: 15px;
+        }
+
+        span {
+            color: $header-color;
+            font-size: 20px;
+            margin-right: 40px;
+        }
+
+        button {
+            border: 0;
+            background-color: #00000000;
+
+            i {
+                color: $header-color;
+                font-size: 30px;
+                cursor: pointer;
+            }
         }
     }
 }

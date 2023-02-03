@@ -2,6 +2,7 @@ const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
 const CopyPlugin = require("copy-webpack-plugin");
+const Dotenv = require('dotenv-webpack');
 
 module.exports = {
     mode: 'development',
@@ -63,16 +64,12 @@ module.exports = {
         new CopyPlugin({
             patterns: [
                 {
-                    from: "game/*.js",
-                    context: "src/"
-
-                },
-                {
                     from: "image/*",
                     context: "public/assets/"
                 },
             ],
         }),
+        new Dotenv()
         //new BundleAnalyzerPlugin(),
     ],
 }
