@@ -17,18 +17,20 @@ const Header = () => {
 
     return (
         <div className="header">
-            <a>Unique</a>
-            <div id="signin">
-                <button onClick={() => sign(true)}>
-                    <i className="fa fa-sign-in" aria-hidden="true"></i>
-                </button>
-            </div>
-            <div id="signout" style={{ display: 'none' }}>
-                <img src="https://xsgames.co/randomusers/assets/avatars/pixel/4.jpg" alt="" />
-                <span>Pink</span>
-                <button onClick={() => sign(false)}>
-                    <i className="fa fa-sign-out" aria-hidden="true"></i>
-                </button>
+            <div className="header-container">
+                <a>Unique</a>
+                <div id="signin">
+                    <button onClick={() => sign(true)}>
+                        <i className="fa fa-sign-in" aria-hidden="true"></i>
+                    </button>
+                </div>
+                <div id="signout" style={{ display: 'none' }}>
+                    <img src="https://xsgames.co/randomusers/assets/avatars/pixel/4.jpg" alt="" />
+                    <span>Pink</span>
+                    <button onClick={() => sign(false)}>
+                        <i className="fa fa-sign-out" aria-hidden="true"></i>
+                    </button>
+                </div>
             </div>
         </div>
     )

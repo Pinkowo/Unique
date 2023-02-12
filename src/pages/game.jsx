@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from "react-router-dom";
 import { takeData } from '../components/gamedata.jsx';
 
 
@@ -9,26 +10,17 @@ class GamePage extends React.Component {
                 //view
                 const pixel = 32;
                 const stage = { w: 640, h: 480 };
-                const chaPos = { x: pixel * res.chara.x, y: pixel * res.chara.y };
+                const chaPos = { x: res.chara.x, y: res.chara.y };
                 const boundInfo = { w: pixel * res.map.w, h: pixel * res.map.h };
-                const doorInfo = { x: pixel * res.door.x, y: pixel * res.door.y };
-                const wallInfo = res.walls.map(function (wall) {
-                    wall.x *= pixel;
-                    wall.y *= pixel;
-                    return wall;
-                });
-                const starInfo = res.stars.map(function (star) {
-                    star.x *= pixel;
-                    star.y *= pixel;
-                    return star;
-                });
+                const doorInfo = { x: res.door.x, y: res.door.y };
+                const wallInfo = res.walls;
+                const starInfo = res.stars;
 
                 //controller
                 let pressKey = { keyLeft: false, keyRight: false, keyJump: false };
                 let jump = { status: 0, height: 32, distance: 32, from: boundInfo.h - pixel * 2, count: 1 };
                 let map = { floor: boundInfo.h - pixel * 2, goal: 5, end: false };
                 let charaStatus = { speed: 1.8, onGround: false };
-                let initScenePos = { x: 0, y: -64 };
 
                 //view
                 const app = new PIXI.Application({
@@ -77,12 +69,16 @@ class GamePage extends React.Component {
                 const doorCloseTexture = PIXI.Texture.from('../image/door_close.png');
                 const doorClose = new PIXI.Sprite(doorCloseTexture);
                 doorClose.position.set(doorInfo.x, doorInfo.y);
-                scene.addChild(doorClose);
+                if (res.door.x > 0) {
+                    scene.addChild(doorClose);
+                }
 
                 const doorOpenTexture = PIXI.Texture.from('../image/door_open.png');
                 const doorOpen = new PIXI.Sprite(doorOpenTexture);
                 doorOpen.position.set(doorInfo.x, doorInfo.y);
-                scene.addChild(doorOpen);
+                if (res.door.x > 0) {
+                    scene.addChild(doorOpen);
+                }
                 doorOpen.visible = false;
 
 
@@ -115,7 +111,6 @@ class GamePage extends React.Component {
                 let starTexture = PIXI.Texture.from('../image/star.png');
                 starInfo.forEach(function (info) {
                     const star = new PIXI.Sprite(starTexture);
-                    star.scale.set(0.05, 0.05);
                     star.position.set(info.x, info.y);
                     scene.addChild(star);
                     const stars = {
@@ -196,7 +191,9 @@ class GamePage extends React.Component {
                 walkLeft.visible = false;
                 walkRight.visible = true;
                 chara.position.set(chaPos.x, chaPos.y);
-                app.stage.addChild(chara);
+                if (res.chara.x > 0) {
+                    app.stage.addChild(chara);
+                }
 
                 const endScene = new PIXI.Container();
                 const successMsg = new PIXI.Container();
@@ -222,11 +219,27 @@ class GamePage extends React.Component {
 
                 //controller
                 function init() {
-                    scene.position.set(initScenePos.x, initScenePos.y);
+                    initScenePos();
                     jump.status = 1;
                     app.ticker.add(delta => gameLoop(delta));
                 }
                 init();
+
+                function initScenePos() {
+                    let x;
+                    if (chara.x - stage.w * 0.5 <= 0) x = 0;
+                    else if (chara.x + chara.width + stage.w * 0.5 >= boundInfo.w) x = stage.w - boundInfo.w;
+                    else x = stage.w * 0.5 - chara.x;
+
+                    let y;
+                    if (chara.y - stage.h * 0.5 <= 0) y = 0;
+                    else if (chara.y + chara.height + stage.h * 0.5 >= boundInfo.h) y = stage.h - boundInfo.h;
+                    else y = stage.h * 0.5 - chara.y;
+
+                    scene.position.set(x, y);
+                    chara.x += x;
+                    chara.y += y;
+                }
 
                 function gameLoop(delta) {
                     gameStatus();
@@ -472,6 +485,10 @@ class GamePage extends React.Component {
             });
     }
 
+    componentWillUnmount() {
+        document.getElementById("game-window").remove();
+    }
+
     render() {
         return (
             <div className='container'>
@@ -480,6 +497,11 @@ class GamePage extends React.Component {
                         <img src="./image/star.png" alt="" />
                         <p>x <span id="score-number">0</span></p>
                     </div>
+                </div>
+                <div className='container-btn-group'>
+                    <Link to="/editor" className="container-btn">
+                        <img src="../image/icon_edit.png" alt="" />
+                    </Link>
                 </div>
             </div>
         )
