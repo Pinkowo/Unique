@@ -4,7 +4,8 @@ import { doc, getDoc, getDocs, deleteDoc, updateDoc, collection, writeBatch } fr
 
 const pixel = 32;
 
-export const takeData = async mode => {
+export const takeData = async (mode, uid) => {
+    const projectName = location.pathname.split('/')[2];
     if (mode === 'edit') {
         const path = doc(db, 'user', 'userid', 'project', 'project-1');
         const project = await getDoc(path);
@@ -53,19 +54,32 @@ export class SaveButton extends React.Component {
         this.saveData = this.saveData.bind(this);
     }
     render() {
+        let imgUrl, spanText;
+        if (this.props.btn == "play") {
+            imgUrl = "../image/icon_play.png";
+            spanText = "Play"
+        }
+        if (this.props.btn == "save") {
+            imgUrl = "../image/icon_save.png";
+            spanText = "Save"
+        }
         return (
             <button onClick={this.saveData} className="container-btn">
-                <img src="../image/icon_save.png" alt="" />
+                <img src={imgUrl} alt="" />
+                <span className="tooltiptext">
+                    {spanText}
+                </span>
             </button>
         )
     }
     saveData() {
-        this.props.play();
         let chara = { x: this.props.items[3].x, y: this.props.items[3].y };
         let door = { x: this.props.items[4].x, y: this.props.items[4].y };
         let map = { w: this.props.items[0].w, h: this.props.items[0].h };
         let stars = this.props.items[1].children;
         let walls = this.props.items[2].children;
+        let starMinNum = document.getElementById('input-star-num').value;
+        if (starMinNum > stars.length) starMinNum = stars.length;
 
         let arr = [];
         walls.forEach(wall => {
@@ -108,7 +122,7 @@ export class SaveButton extends React.Component {
                 const batch = writeBatch(db);
                 batch.set(chageObj('chara'), { x: chara.x - pixel * 0.5, y: chara.y - pixel * 0.5 });
                 batch.set(chageObj('door'), { x: door.x - pixel, y: door.y - pixel });
-                batch.set(chageObj('map'), { w: map.w, h: map.h });
+                batch.set(chageObj('map'), { w: map.w, h: map.h, starMinNum: starMinNum });
                 stars.forEach((star, i) => {
                     batch.set(chageObj('map', 'stars', 'star' + i), { x: star.x, y: star.y, exist: true });
                 });
@@ -116,6 +130,12 @@ export class SaveButton extends React.Component {
                     batch.set(chageObj('map', 'walls', 'wall' + i), { x: (wall.x - 1) * pixel, y: (wall.y - 1) * pixel, num: wall.num });
                 });
                 batch.commit();
+                document.getElementById('save-hint').style.display = 'flex';
+                document.getElementById('save-hint').style.animation = 'fadein 1s ease';
+                setTimeout(() => {
+                    document.getElementById('save-hint').style.display = 'none';
+                }, 1000)
+
             })
             .catch((err) => {
                 console.log(err);

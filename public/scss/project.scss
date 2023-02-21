@@ -1,0 +1,83 @@
+.project-list {
+    list-style: none;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    grid-gap: 20px;
+
+    li {
+        background-color: #fff;
+        width: 200px;
+        height: 200px;
+        border: 2px solid black;
+        border-radius: 10px;
+        cursor: pointer;
+        @include box-shadow(0, 3px);
+
+        a {
+            text-decoration: none;
+            color: black;
+
+            .project-img {
+                width: 100%;
+                height: 150px;
+                border-radius: 8px 8px 0 0;
+                overflow: hidden;
+                position: relative;
+
+                .img-icon {
+                    position: absolute;
+                    top: 64px;
+                    left: 84px;
+                    visibility: hidden;
+                }
+
+                .img-main {
+                    width: 100%;
+                    height: 100%;
+                }
+
+            }
+
+            .project-name {
+                @include d-flex;
+                height: 48px;
+            }
+        }
+
+        &:hover {
+            box-shadow: none;
+            background-color: black;
+            margin-top: 3px;
+            margin-bottom: -3px;
+
+            a {
+                text-decoration: none;
+                color: #fff;
+
+                .project-img {
+                    .img-main {
+                        opacity: 0.5;
+                    }
+
+                    .img-icon {
+                        visibility: visible;
+                    }
+                }
+            }
+
+        }
+
+        button {
+            @include btn-init;
+            width: 100%;
+            height: 100%;
+            border-radius: 8px;
+            font-size: 32px;
+            background-color: #fff;
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -o-user-select: none;
+            user-select: none;
+        }
+    }
+}

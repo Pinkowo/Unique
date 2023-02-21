@@ -57,7 +57,7 @@ module.exports = {
     },
     plugins: [
         new HtmlWebpackPlugin({
-            title: 'Webpack App',
+            title: 'Unique',
             filename: 'index.html',
             template: 'public/index.html',
         }),

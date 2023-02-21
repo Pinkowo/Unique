@@ -2,27 +2,35 @@ import React from 'react';
 import * as ReactDOMClient from 'react-dom/client';
 import HomePage from './pages/home.jsx';
 import GamePage from './pages/game.jsx';
+import ProjectPage from './pages/project.jsx';
 import EditorPage from './pages/editor.jsx';
+import SignInPage from './pages/signin.jsx';
+import SignUpPage from './pages/signup.jsx';
 import Header from './components/header.jsx';
 import Navbar from './components/navbar.jsx';
-import EditPanel from './components/editPanel.jsx';
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import { auth } from './auth.js';
+import { onAuthStateChanged } from "firebase/auth";
 
-ReactDOMClient.createRoot(document.getElementById('root')).render(
-    <Router>
-        <Header />
-        <div className='section'>
-            <Navbar />
-            <Routes>
-                <Route exact path="/" element={<HomePage />} />
-                <Route path="/play" element={<GamePage />} />
-                <Route path="/editor" element={<EditorPage />} />
-            </Routes>
-            <EditPanel />
-        </div>
-    </Router>
-)
-
+onAuthStateChanged(auth, (user) => {
+    ReactDOMClient.createRoot(
+        document.getElementById('root')).render(
+            <Router>
+                <Header user={user} />
+                <div className='section'>
+                    <Navbar user={user} />
+                    <Routes>
+                        <Route exact path="/" element={<HomePage />} />
+                        <Route path="/play/:project" element={<GamePage user={user} />} />
+                        <Route path="/projects" element={<ProjectPage user={user} />} />
+                        <Route path="/edit/:project" element={<EditorPage user={user} />} />
+                        <Route path="/signin" element={<SignInPage />} />
+                        <Route path="/signup" element={<SignUpPage />} />
+                    </Routes>
+                </div>
+            </Router>
+        )
+});
 /*
     <Route path="/project" element={<ProjectPage />} />
     <Route path="/edit/:game" element={<EditPage />} />

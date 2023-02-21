@@ -4,6 +4,12 @@ import { takeData } from '../components/gamedata.jsx';
 
 
 class GamePage extends React.Component {
+    constructor() {
+        super();
+        this.state = {
+            minStarNum: 0
+        };
+    }
     componentDidMount() {
         takeData()
             .then((res) => {
@@ -15,11 +21,14 @@ class GamePage extends React.Component {
                 const doorInfo = { x: res.door.x, y: res.door.y };
                 const wallInfo = res.walls;
                 const starInfo = res.stars;
+                this.setState({
+                    minStarNum: res.map.starMinNum
+                });
 
                 //controller
                 let pressKey = { keyLeft: false, keyRight: false, keyJump: false };
                 let jump = { status: 0, height: 32, distance: 32, from: boundInfo.h - pixel * 2, count: 1 };
-                let map = { floor: boundInfo.h - pixel * 2, goal: 5, end: false };
+                let map = { floor: boundInfo.h - pixel * 2, end: false };
                 let charaStatus = { speed: 1.8, onGround: false };
 
                 //view
@@ -79,7 +88,11 @@ class GamePage extends React.Component {
                 if (res.door.x > 0) {
                     scene.addChild(doorOpen);
                 }
-                doorOpen.visible = false;
+                if (res.map.starMinNum == 0) {
+                    doorClose.visible = false;
+                } else {
+                    doorOpen.visible = false;
+                }
 
 
                 //wall
@@ -111,7 +124,7 @@ class GamePage extends React.Component {
                 let starTexture = PIXI.Texture.from('../image/star.png');
                 starInfo.forEach(function (info) {
                     const star = new PIXI.Sprite(starTexture);
-                    star.position.set(info.x, info.y);
+                    star.position.set(info.x - 16, info.y - 16);
                     scene.addChild(star);
                     const stars = {
                         star: star,
@@ -325,8 +338,10 @@ class GamePage extends React.Component {
                     if (!walls.isUp) {
                         if (walls.isMiddle) {
                             for (let i = 1; i <= 3; i++) {
-                                if (chara.y == walls.wall.getGlobalPosition().y + pixel * i ||
-                                    chara.y == walls.wall.getGlobalPosition().y + pixel * i + 1) {
+                                if (chara.x + chara.width > walls.wall.getGlobalPosition().x &&
+                                    chara.x < walls.wall.getGlobalPosition().x + walls.wall.width &&
+                                    (chara.y == walls.wall.getGlobalPosition().y + pixel * i ||
+                                        chara.y == walls.wall.getGlobalPosition().y + pixel * i + 1)) {
                                     return i;
                                 }
                             }
@@ -351,7 +366,7 @@ class GamePage extends React.Component {
                         star.exist = false;
                         score++;
                         scoreNum.innerHTML = score;
-                        if (score >= map.goal) {
+                        if (score >= res.map.starMinNum) {
                             doorOpen.visible = true;
                         }
                     }
@@ -441,8 +456,10 @@ class GamePage extends React.Component {
                         case 'jump':
                             if (chara.y <= pixel * 3
                                 && scene.y < 0) {
+                                jump.from = stage.h - pixel * 2;
                                 scene.y -= speed;
-                                if (scene.y > 0) {
+                                chara.y -= speed;
+                                if (scene.y >= 0) {
                                     scene.y = 0;
                                     return false;
                                 }
@@ -450,11 +467,11 @@ class GamePage extends React.Component {
                             }
                             if (chara.y >= stage.h - pixel * 2) {
                                 jump.from = stage.h - pixel * 2;
-                                chara.y = jump.from;
                                 return false;
                             } else if (chara.y >= stage.h - pixel * 3
                                 && stage.h - boundInfo.h < scene.y) {
                                 scene.y += speed;
+                                chara.y += speed;
                                 if (stage.h - boundInfo.h > scene.y)
                                     scene.y = stage.h - boundInfo.h;
                                 return true;
@@ -496,11 +513,15 @@ class GamePage extends React.Component {
                     <div id="score">
                         <img src="./image/star.png" alt="" />
                         <p>x <span id="score-number">0</span></p>
+                        <p className='score-slash'>/<span id="score-goal">{this.state.minStarNum}</span></p>
                     </div>
                 </div>
                 <div className='container-btn-group'>
-                    <Link to="/editor" className="container-btn">
+                    <Link to="/editor/pink" className="container-btn">
                         <img src="../image/icon_edit.png" alt="" />
+                        <span className="tooltiptext">
+                            Edit
+                        </span>
                     </Link>
                 </div>
             </div>

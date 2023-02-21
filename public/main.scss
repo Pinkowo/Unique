@@ -10,6 +10,26 @@ $navbar-bg-color: #ffffff;
 $navbar-color: #4b4b4b;
 $btn-hover-color: #343434;
 $btn-active-color: #161616;
+$tooltip-color: rgba(0, 0, 0, 0.555);
+$alert-color: rgb(212, 0, 0);
+
+@mixin box-shadow($v, $h: 0) {
+    box-shadow: $v $h 5px 1px rgba(113, 113, 113, 0.5);
+}
+
+@mixin d-flex($j: center, $a: center) {
+    display: flex;
+    justify-content: $j;
+    align-items: $a;
+}
+
+@mixin btn-init($m: 0, $b: 0, $p: 0) {
+    margin: $m;
+    border: $b;
+    padding: $p;
+    outline: none;
+    cursor: pointer;
+}
 
 html,
 body {
@@ -25,187 +45,10 @@ body {
     height: 100%;
 }
 
-.header {
-    background-color: $header-bg-color;
-    width: 100%;
-    height: 50px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
 
-    .header-container {
-        width: 90%;
-        display: flex;
-        justify-content: space-between;
 
-        a {
-            color: $header-color;
-            font-size: 25px;
-            cursor: pointer;
-        }
-
-        div {
-            display: flex;
-            align-items: center;
-
-            img {
-                height: 30px;
-                width: 30px;
-                border-radius: 30px;
-                cursor: pointer;
-                margin-right: 15px;
-            }
-
-            span {
-                color: $header-color;
-                font-size: 20px;
-                margin-right: 40px;
-            }
-
-            button {
-                border: 0;
-                background-color: #00000000;
-
-                i {
-                    color: $header-color;
-                    font-size: 30px;
-                    cursor: pointer;
-                }
-            }
-        }
-    }
-}
-
-.section {
-    display: flex;
-    flex-grow: 1;
-
-    .navbar {
-        transform: translateX(-200px);
-        background-color: $navbar-bg-color;
-        width: 200px;
-        height: 100%;
-        display: flex;
-        flex-grow: 1;
-        box-shadow: 5px 0 5px 1px rgba(113, 113, 113, 0.5);
-        position: fixed;
-        z-index: 1;
-
-        ul {
-            list-style: none;
-            padding: 0;
-            width: 100%;
-
-            li {
-                height: 50px;
-            }
-        }
-    }
-
-    .open {
-        transform: translateX(200px);
-        transition: all 0.5s;
-    }
-
-    .container {
-        flex-grow: 1;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-    }
-}
-
-.navbar-link,
-.navbar-link-title {
-    font-size: 20px;
-    font-weight: 700;
-    color: $navbar-color;
-    text-decoration: none;
-    height: 100%;
-    display: flex;
-    align-items: center;
-    justify-content: flex-start;
-    padding-left: 40px;
-}
-
-.navbar-link-title {
-    font-size: 30px;
-}
-
-.navbar-link:hover {
-    color: $header-color;
-    background-color: $navbar-color;
-}
-
-#editor-window {
-    width: 736px;
-    height: 480px;
-    border: 5px solid black;
-    -webkit-user-select: none;
-    -moz-user-select: none;
-    -o-user-select: none;
-    user-select: none;
-}
-
-#game-window {
-    width: 640px;
-    height: 480px;
-    border: 5px solid black;
-    position: relative;
-
-    #score {
-        position: absolute;
-        top: 10px;
-        left: 10px;
-        font-family: Cubic, serif;
-        font-size: 32px;
-        color: white;
-        background-color: rgba(255, 255, 255, 0);
-        display: flex;
-
-        img {
-            width: 32px;
-            height: 32px;
-            margin-right: 10px;
-        }
-
-        p {
-            margin: 0;
-        }
-    }
-}
-
-.container-btn-group {
-    height: 480px;
-
-    .container-btn {
-        height: 32px;
-        width: 32px;
-        border: 0;
-        border-radius: 8px;
-        cursor: pointer;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        background-color: $navbar-color;
-        margin: 10px;
-        margin-top: 15px;
-
-        &:hover {
-            background-color: $btn-hover-color;
-        }
-
-        &:active {
-            background-color: $btn-active-color;
-        }
-
-        img {
-            height: 20px;
-            width: 20px;
-        }
-    }
-}
-
-.disabled-link {
-    pointer-events: none;
-}
+@import "./scss/header.scss";
+@import "./scss/canvas.scss";
+@import "./scss/section.scss";
+@import "./scss/form.scss";
+@import "./scss/project.scss";

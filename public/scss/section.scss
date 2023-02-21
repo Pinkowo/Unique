@@ -1,0 +1,86 @@
+%navbar-link {
+    font-size: 20px;
+    font-weight: 700;
+    color: $navbar-color;
+    text-decoration: none;
+    height: 100%;
+    @include d-flex(flex-start);
+    padding-left: 40px;
+
+    &:hover {
+        color: $header-color;
+        background-color: $navbar-color;
+    }
+}
+
+.section {
+    display: flex;
+    flex-grow: 1;
+
+    %navbar {
+        background-color: $navbar-bg-color;
+        width: 200px;
+        height: 100%;
+        display: flex;
+        flex-grow: 1;
+        @include box-shadow(3px);
+        position: fixed;
+        z-index: 1;
+
+        .navbar-link {
+            @extend %navbar-link;
+        }
+
+        .navbar-link-title {
+            @extend %navbar-link;
+            font-size: 30px;
+        }
+
+        ul {
+            list-style: none;
+            padding: 0;
+            width: 100%;
+
+            li {
+                height: 50px;
+            }
+        }
+
+        button {
+            @include btn-init;
+            padding-right: 5px;
+            border-radius: 0 10px 10px 0;
+            height: 50px;
+            width: 30px;
+            position: absolute;
+            left: 200px;
+            top: calc(50% - 50px);
+            color: $navbar-color;
+            background-color: $navbar-bg-color;
+            @include box-shadow(5px);
+            transition: all 0.3s;
+
+            &:hover {
+                width: 40px;
+                transition: all 0.3s;
+            }
+        }
+    }
+
+    .open {
+        @extend %navbar;
+        transform: translateX(0px);
+        transition: all 0.5s;
+    }
+
+    .close {
+        @extend %navbar;
+        transform: translateX(-200px);
+        transition: all 0.5s;
+    }
+
+    .container {
+        flex-grow: 1;
+        @include d-flex;
+    }
+}

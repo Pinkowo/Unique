@@ -1,0 +1,55 @@
+.header {
+    background-color: $header-bg-color;
+    width: 100%;
+    height: 50px;
+    @include d-flex;
+
+    .header-container {
+        width: 90%;
+        @include d-flex(space-between);
+
+        a {
+            color: $header-color;
+            font-size: 25px;
+            cursor: pointer;
+            text-decoration: none;
+        }
+
+        div {
+            @include d-flex;
+
+            img {
+                height: 30px;
+                width: 30px;
+                border-radius: 30px;
+                margin-right: 15px;
+            }
+
+            span {
+                color: $header-color;
+                font-size: 20px;
+                margin-right: 40px;
+                cursor: default;
+            }
+
+            button {
+                border: 0;
+                background-color: #00000000;
+
+                i {
+                    color: $header-color;
+                    font-size: 30px;
+                    cursor: pointer;
+                }
+            }
+
+            a {
+                i {
+                    color: $header-color;
+                    font-size: 30px;
+                    cursor: pointer;
+                }
+            }
+        }
+    }
+}

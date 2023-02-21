@@ -1,0 +1,188 @@
+.sign-form {
+    width: 370px;
+    height: 420px;
+    background-color: #fff;
+    border-radius: 20px;
+    @include box-shadow(0);
+    padding: 30px;
+
+    >div {
+
+        @include d-flex(center, end);
+        margin-bottom: 15px;
+
+        h1 {
+            font-size: 30px;
+            margin: 0;
+        }
+
+        p {
+            margin: 0 10px;
+        }
+
+        .form-link {
+            color: $navbar-color;
+            text-decoration: none;
+            font-size: 18px;
+            text-align: center;
+            margin: 0;
+
+            &:hover {
+                font-weight: 600;
+                color: black;
+            }
+        }
+    }
+
+    >p {
+        @include d-flex;
+        color: $alert-color;
+
+        i {
+            margin: 0 5px;
+        }
+    }
+
+    form {
+        flex-direction: column;
+        height: 365px;
+        width: 280px;
+        margin: auto;
+
+        label {
+            position: relative;
+
+            p {
+                width: 240px;
+                margin: 10px 0 5px 10px;
+                font-size: 14px;
+            }
+
+            .tooltiptext {
+                width: 180px;
+                font-size: 14px;
+                background-color: $tooltip-color;
+                color: #fff;
+                text-align: center;
+                padding: 5px;
+                border-radius: 6px;
+                position: absolute;
+                z-index: 1;
+                top: 30px;
+                left: 290px;
+                font-family: Cubic;
+
+                &::after {
+                    content: " ";
+                    position: absolute;
+                    top: 50%;
+                    right: 100%;
+                    margin-top: -5px;
+                    border-width: 5px;
+                    border-style: solid;
+                    border-color: transparent $tooltip-color transparent transparent;
+                }
+            }
+
+            .input-box {
+                position: relative;
+
+                input {
+                    height: 35px;
+                    width: 246px;
+                    border-radius: 10px;
+                    border-color: $content-bg-color;
+                    padding: 0px 15px;
+                    font-size: 16px;
+                    font-family: Cubic;
+                }
+
+                i {
+                    position: absolute;
+                    top: 10px;
+                    right: 10px;
+                    cursor: pointer;
+                    color: $navbar-color;
+                }
+            }
+
+            span {
+                @include d-flex(start);
+                font-size: 12px;
+                color: $alert-color;
+                margin-top: 5px;
+
+                i {
+                    margin: 0 5px;
+                }
+            }
+        }
+
+        .form-link-pw {
+            width: 250px;
+            margin: 5px 15px;
+            @include d-flex(end);
+
+            a {
+                color: $navbar-color;
+                text-decoration: none;
+                font-size: 12px;
+
+                &:hover {
+                    text-decoration: underline;
+                }
+            }
+        }
+
+        %form-btn {
+            height: 40px;
+            width: 280px;
+            border: 0;
+            border-radius: 10px;
+            cursor: pointer;
+            font-family: Cubic;
+            margin: 20px 0 0 0;
+        }
+
+        .form-btn {
+            @extend %form-btn;
+            background-color: $header-bg-color;
+            color: $header-color;
+
+            &:hover {
+                background-color: $btn-hover-color;
+            }
+
+            &:active {
+                background-color: $btn-active-color;
+            }
+        }
+
+        .form-btn-disabled {
+            @extend %form-btn;
+            background-color: $content-bg-color;
+            color: #fff;
+            cursor: auto;
+        }
+
+        .form-btn-other {
+            @extend %form-btn;
+            @include d-flex;
+            border: 2px solid $header-bg-color;
+            background-color: #fff;
+            color: $header-bg-color;
+            font-weight: 600;
+
+            &:hover {
+                background-color: $content-bg-color;
+            }
+
+            img {
+                width: 20px;
+                height: 20px;
+                margin-right: 10px;
+            }
+        }
+
+    }
+}
