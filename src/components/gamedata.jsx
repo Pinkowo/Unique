@@ -1,19 +1,32 @@
 import React from 'react';
+import { useNavigate } from "react-router-dom";
 import { db } from '../auth.js';
-import { doc, getDoc, getDocs, deleteDoc, updateDoc, collection, writeBatch } from "firebase/firestore";
+import { doc, getDoc, getDocs, deleteDoc, updateDoc, setDoc, collection, writeBatch, serverTimestamp } from "firebase/firestore";
 
 const pixel = 32;
 
 export const takeData = async (mode, uid) => {
-    const projectName = location.pathname.split('/')[2];
+    const projectId = location.pathname.split('/')[2];
     if (mode === 'edit') {
-        const path = doc(db, 'user', 'userid', 'project', 'project-1');
+        const path = doc(db, 'user', uid, 'project', projectId);
         const project = await getDoc(path);
         if (project.data().firstTimeEdit) {
             await updateDoc(path, {
                 firstTimeEdit: false
             });
-            return;
+            await setDoc(chageObj('map'), {
+                w: 20,
+                h: 15,
+                starMinNum: 0
+            });
+            await setDoc(chageObj('chara'), {
+                x: 0,
+                y: 0
+            });
+            await setDoc(chageObj('door'), {
+                x: 0,
+                y: 0
+            });
         }
     }
     const chara = await getDoc(chageObj('chara'));
@@ -34,9 +47,9 @@ export const takeData = async (mode, uid) => {
 
     function chageObj(obj, obj2) {
         if (typeof obj2 === 'undefined')
-            return doc(db, 'user', 'userid', 'project', 'project-1', 'setting', obj);
+            return doc(db, 'user', uid, 'project', projectId, 'setting', obj);
         else
-            return collection(db, 'user', 'userid', 'project', 'project-1', 'setting', obj, obj2);
+            return collection(db, 'user', uid, 'project', projectId, 'setting', obj, obj2);
     }
 
     return {
@@ -48,37 +61,17 @@ export const takeData = async (mode, uid) => {
     };
 };
 
-export class SaveButton extends React.Component {
-    constructor(props) {
-        super(props);
-        this.saveData = this.saveData.bind(this);
-    }
-    render() {
-        let imgUrl, spanText;
-        if (this.props.btn == "play") {
-            imgUrl = "../image/icon_play.png";
-            spanText = "Play"
-        }
-        if (this.props.btn == "save") {
-            imgUrl = "../image/icon_save.png";
-            spanText = "Save"
-        }
-        return (
-            <button onClick={this.saveData} className="container-btn">
-                <img src={imgUrl} alt="" />
-                <span className="tooltiptext">
-                    {spanText}
-                </span>
-            </button>
-        )
-    }
-    saveData() {
-        let chara = { x: this.props.items[3].x, y: this.props.items[3].y };
-        let door = { x: this.props.items[4].x, y: this.props.items[4].y };
-        let map = { w: this.props.items[0].w, h: this.props.items[0].h };
-        let stars = this.props.items[1].children;
-        let walls = this.props.items[2].children;
-        let starMinNum = document.getElementById('input-star-num').value;
+export const SaveBtn = (props) => {
+    const goPath = useNavigate();
+    function saveData() {
+        const uid = props.user.uid;
+        const projectId = location.pathname.split('/')[2];
+        let chara = { x: props.items[3].x, y: props.items[3].y };
+        let door = { x: props.items[4].x, y: props.items[4].y };
+        let map = { w: props.items[0].w, h: props.items[0].h };
+        let stars = props.items[1].children;
+        let walls = props.items[2].children;
+        let starMinNum = parseInt(document.getElementById('input-star-num').value, 10);
         if (starMinNum > stars.length) starMinNum = stars.length;
 
         let arr = [];
@@ -106,7 +99,6 @@ export class SaveButton extends React.Component {
             }
         });
 
-
         const takeData = async () => {
             const starSnapshot = await getDocs(chageObj('map', 'stars'));
             starSnapshot.forEach(doc => {
@@ -119,7 +111,9 @@ export class SaveButton extends React.Component {
         };
         takeData()
             .then(() => {
+                const time = serverTimestamp();
                 const batch = writeBatch(db);
+                batch.update(doc(db, 'user', uid, 'project', projectId), { time: time });
                 batch.set(chageObj('chara'), { x: chara.x - pixel * 0.5, y: chara.y - pixel * 0.5 });
                 batch.set(chageObj('door'), { x: door.x - pixel, y: door.y - pixel });
                 batch.set(chageObj('map'), { w: map.w, h: map.h, starMinNum: starMinNum });
@@ -130,25 +124,50 @@ export class SaveButton extends React.Component {
                     batch.set(chageObj('map', 'walls', 'wall' + i), { x: (wall.x - 1) * pixel, y: (wall.y - 1) * pixel, num: wall.num });
                 });
                 batch.commit();
-                document.getElementById('save-hint').style.display = 'flex';
-                document.getElementById('save-hint').style.animation = 'fadein 1s ease';
-                setTimeout(() => {
-                    document.getElementById('save-hint').style.display = 'none';
-                }, 1000)
-
+            })
+            .then(() => {
+                if (props.btn === 'save') {
+                    document.getElementById('save-hint').style.display = 'flex';
+                    document.getElementById('save-hint').style.animation = 'fadein 1s ease';
+                    setTimeout(() => {
+                        document.getElementById('save-hint').style.display = 'none';
+                    }, 1000)
+                    return;
+                }
+                if (props.btn === 'play') {
+                    const path = '/play/' + projectId;
+                    goPath(path);
+                    return;
+                }
             })
             .catch((err) => {
                 console.log(err);
             });
 
-
         function chageObj(obj, obj2, obj3) {
             if (typeof obj2 === 'undefined')
-                return doc(db, 'user', 'userid', 'project', 'project-1', 'setting', obj);
+                return doc(db, 'user', uid, 'project', projectId, 'setting', obj);
             else if (typeof obj3 === 'undefined')
-                return collection(db, 'user', 'userid', 'project', 'project-1', 'setting', obj, obj2);
+                return collection(db, 'user', uid, 'project', projectId, 'setting', obj, obj2);
             else
-                return doc(db, 'user', 'userid', 'project', 'project-1', 'setting', obj, obj2, obj3);
+                return doc(db, 'user', uid, 'project', projectId, 'setting', obj, obj2, obj3);
         }
     }
-};
+    let imgUrl, spanText;
+    if (props.btn == "play") {
+        imgUrl = "../image/icon_play.png";
+        spanText = "Play"
+    }
+    if (props.btn == "save") {
+        imgUrl = "../image/icon_save.png";
+        spanText = "Save"
+    }
+    return (
+        <button onClick={saveData} className="container-btn">
+            <img src={imgUrl} alt="" />
+            <span className="tooltiptext">
+                {spanText}
+            </span>
+        </button>
+    )
+}

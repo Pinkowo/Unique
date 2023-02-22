@@ -26,6 +26,7 @@ onAuthStateChanged(auth, (user) => {
                         <Route path="/edit/:project" element={<EditorPage user={user} />} />
                         <Route path="/signin" element={<SignInPage />} />
                         <Route path="/signup" element={<SignUpPage />} />
+                        <Route path="*" element={<HomePage to="/" replace />} />
                     </Routes>
                 </div>
             </Router>

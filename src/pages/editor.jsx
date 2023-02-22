@@ -1,9 +1,6 @@
 import React from 'react';
-import { Link } from "react-router-dom";
-import { SaveButton, takeData } from '../components/gamedata.jsx';
+import { SaveBtn, takeData } from '../components/gamedata.jsx';
 import EditPanel from '../components/editPanel.jsx';
-import { auth } from '../auth.js';
-import { onAuthStateChanged } from "firebase/auth";
 
 
 class EditorPage extends React.Component {
@@ -389,10 +386,12 @@ class EditorPage extends React.Component {
                         function onDeleteMove() {
                             if (mode === 'delete') {
                                 if (this === chara) {
+                                    chara.position.set(0, 0);
                                     charaTool.interactive = true;
                                     charaTool.alpha = 1;
                                 }
                                 if (this === door) {
+                                    door.position.set(0, 0);
                                     doorTool.interactive = true;
                                     doorTool.alpha = 1;
                                 }
@@ -692,6 +691,7 @@ class EditorPage extends React.Component {
                                 if (typeof chara != "undefined" &&
                                     chara.x >= x * pixel - pixel && chara.x < x * pixel &&
                                     chara.y >= y * pixel - pixel && chara.y < y * pixel) {
+                                    chara.position.set(0, 0);
                                     scene.removeChild(chara);
                                     charaTool.interactive = true;
                                     charaTool.alpha = 1;
@@ -699,6 +699,7 @@ class EditorPage extends React.Component {
                                 if (typeof door != "undefined" &&
                                     door.x >= x * pixel - pixel && door.x < x * pixel &&
                                     door.y >= y * pixel - pixel && door.y < y * pixel) {
+                                    door.position.set(0, 0);
                                     scene.removeChild(door);
                                     doorTool.interactive = true;
                                     doorTool.alpha = 1;
@@ -750,16 +751,14 @@ class EditorPage extends React.Component {
 
     render() {
         return (
-            <div className='section'>
+            <div className='container-edit'>
                 <div className='container'>
                     <div id="editor-window">
                         <div id="save-hint" style={{ display: 'none' }}>Saved</div>
                     </div>
                     <div className='container-btn-group'>
-                        <Link to="/play">
-                            <SaveButton items={this.state.items} btn={"play"} play={this.handlePlay} />
-                        </Link>
-                        <SaveButton items={this.state.items} btn={"save"} play={this.handlePlay} />
+                        <SaveBtn user={this.props.user} items={this.state.items} btn={"play"} play={this.handlePlay} />
+                        <SaveBtn user={this.props.user} items={this.state.items} btn={"save"} play={this.handlePlay} />
                     </div>
                 </div>
                 <EditPanel
@@ -776,7 +775,7 @@ class EditorPage extends React.Component {
 }
 
 export default EditorPage;
-
+//                        <Link to={"/play/" + projectId}>
 
         // let style;
         // if (this.state.canPlay) {

@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from "react-router-dom";
 import { db } from '../auth.js';
-import { collection, getDocs, addDoc, serverTimestamp, query, orderBy } from "firebase/firestore";
+import { collection, doc, getDoc, getDocs, addDoc, updateDoc, serverTimestamp, query, orderBy } from "firebase/firestore";
 
 const ProjectPage = (props) => {
     const [items, useItems] = useState([]);
@@ -14,7 +14,7 @@ const ProjectPage = (props) => {
             useUid(props.user.uid);
             const takeData = async () => {
                 const order = query(collection(db, "user", props.user.uid, "project"),
-                    orderBy("time"));
+                    orderBy("time", "desc"));
                 const querySnapshot = await getDocs(order);
                 let itemGroup = [];
                 querySnapshot.forEach(doc => {
@@ -25,7 +25,10 @@ const ProjectPage = (props) => {
                     itemGroup.push(newItem);
                 });
                 useItems(itemGroup);
-                useI(querySnapshot._snapshot.docChanges.length + 1);
+                const docSnap = await getDoc(doc(db, "user", props.user.uid));
+                if (docSnap.exists()) {
+                    useI(docSnap.data().projectNum + 1);
+                }
             }
             takeData()
                 .catch((err) => {
@@ -44,6 +47,7 @@ const ProjectPage = (props) => {
                 name: 'project' + i,
                 time: time
             });
+            await updateDoc(doc(db, "user", uid), { projectNum: i });
             const path = '/edit/' + docRef.id;
             goPath(path);
         }
@@ -51,13 +55,6 @@ const ProjectPage = (props) => {
             .catch((err) => {
                 console.log(err);
             });
-        // const newItem = {
-        //     id: i
-        // };
-        // useItems(
-        //     items.concat(newItem)
-        // );
-        // useI(i + 1);
     }
     return (
         <div className="container" style={{ 'justifyContent': 'start', 'flexDirection': 'column' }}>

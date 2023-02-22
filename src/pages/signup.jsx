@@ -32,7 +32,8 @@ const SignUpPage = () => {
                         await setDoc(doc(db, "user", result.user.uid), {
                             name: nameVal,
                             profile: profile,
-                            email: emailVal
+                            email: emailVal,
+                            projectNum: 0
                         }, { merge: true });
                     }
                     setData()

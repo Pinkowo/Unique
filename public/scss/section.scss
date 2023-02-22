@@ -15,7 +15,7 @@
 
 .section {
     display: flex;
-    flex-grow: 1;
+    height: calc(100% - 50px);
 
     %navbar {
         background-color: $navbar-bg-color;
@@ -78,9 +78,9 @@
         transform: translateX(-200px);
         transition: all 0.5s;
     }
+}
 
-    .container {
-        flex-grow: 1;
-        @include d-flex;
-    }
+.container {
+    flex-grow: 1;
+    @include d-flex;
 }

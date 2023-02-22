@@ -52,7 +52,15 @@
     }
 }
 
+.container-edit {
+    display: flex;
+    position: relative;
+    width: 100%;
+}
+
 #edit-panel {
+    position: absolute;
+    right: 0;
     width: 200px;
     height: 100%;
     color: $navbar-color;
