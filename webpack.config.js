@@ -9,15 +9,15 @@ module.exports = {
     devtool: 'source-map',
     entry: {
         bundle: [
-            path.resolve(__dirname, 'src/index.js'),
-            path.resolve(__dirname, 'src/App.jsx')
+            path.resolve(__dirname, 'src/index.js')
         ],
     },
     output: {
         path: path.resolve(__dirname, 'dist'),
         filename: '[name][contenthash].js',
         clean: true,
-        assetModuleFilename: '[name][ext]'
+        assetModuleFilename: '[name][ext]',
+        publicPath: '/'
     },
     devServer: {
         static: {

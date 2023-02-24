@@ -295,6 +295,11 @@ class EditorPage extends React.Component {
                         //controller
                         let dragTarget = null;
                         let originPos = { x: 0, y: 0 };
+                        let originParent = null;
+                        const dragLayer = new PIXI.Container();
+                        dragLayer.zIndex = 100;
+                        dragLayer.x = pixel * 3;
+                        app.stage.addChild(dragLayer);
                         let isDrawing = false;
                         let mode = 'draw';
 
@@ -463,9 +468,9 @@ class EditorPage extends React.Component {
                                 originPos.y = this.y;
                                 this.alpha = 0.5;
                                 dragTarget = this;
+                                originParent = dragTarget.parent;
                                 dragTarget.zIndex = 100;
-                                dragTarget.parent.zIndex = 100;
-                                scene.zIndex = 50;
+                                dragLayer.addChild(dragTarget);
                                 app.stage.sortChildren();
                                 app.stage.on('pointermove', onDragMove);
                             }
@@ -474,8 +479,7 @@ class EditorPage extends React.Component {
                             if (dragTarget) {
                                 app.stage.off('pointermove', onDragMove);
                                 dragTarget.zIndex = 0;
-                                dragTarget.parent.zIndex = 0;
-                                scene.zIndex = 0;
+                                originParent.addChild(dragTarget);
                                 dragTarget.alpha = 1;
                                 if (dragTarget.height === pixel) {
                                     const x = Math.round(dragTarget.x / pixel + 0.5);
@@ -499,6 +503,7 @@ class EditorPage extends React.Component {
                                 if (dragTarget.height === pixel * 2) {
                                     const x = Math.round(dragTarget.x / pixel);
                                     const y = Math.round(dragTarget.y / pixel);
+                                    scene.addChild(dragTarget);
                                     if (x - moveX >= 0) {
                                         const doorArea = [
                                             { x: x, y: y },
@@ -603,6 +608,7 @@ class EditorPage extends React.Component {
                                     drawTarget = wallCursor;
                                 }
                                 this.alpha = 0.5;
+                                drawTarget.zIndex = 100;
                                 drawTarget.position.set(-pixel);
                                 app.stage.addChild(drawTarget);
                                 drawTarget.alpha = 0.8;
@@ -697,8 +703,8 @@ class EditorPage extends React.Component {
                                     charaTool.alpha = 1;
                                 }
                                 if (typeof door != "undefined" &&
-                                    door.x >= x * pixel - pixel && door.x < x * pixel &&
-                                    door.y >= y * pixel - pixel && door.y < y * pixel) {
+                                    door.x >= x * pixel - pixel && door.x <= x * pixel &&
+                                    door.y >= y * pixel - pixel && door.y <= y * pixel) {
                                     door.position.set(0, 0);
                                     scene.removeChild(door);
                                     doorTool.interactive = true;
@@ -775,18 +781,3 @@ class EditorPage extends React.Component {
 }
 
 export default EditorPage;
-//                        <Link to={"/play/" + projectId}>
-
-        // let style;
-        // if (this.state.canPlay) {
-            // style = {
-            //     'pointerEvents': 'auto',
-            //     'backgroundColor': '#4b4b4b'
-            // }
-        // }
-        // if (!this.state.canPlay) {
-        //     style = {
-        //         'pointerEvents': 'none',
-        //         'backgroundColor': '#9e9e9ec9'
-        //     };
-        // }

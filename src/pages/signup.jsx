@@ -1,18 +1,23 @@
-import React, { useState } from 'react';
-import { Link, useNavigate } from "react-router-dom";
+import React, { useState, useEffect } from 'react';
+import { Link } from "react-router-dom";
 import { Input, FormBtn, OtherFormBtn } from '../components/form.jsx';
 import { auth, db } from '../auth.js';
 import { createUserWithEmailAndPassword, updateProfile, signInWithEmailAndPassword } from "firebase/auth";
 import { doc, setDoc } from "firebase/firestore"
 
-const SignUpPage = () => {
+const SignUpPage = (props) => {
     const [name, useName] = useState(false);
     const [email, useEmail] = useState(false);
     const [password, usePassword] = useState(false);
     const [className, useClassName] = useState('form-btn-disabled');
     const [errMsg, useErrMsg] = useState('');
     const [display, useDisplay] = useState('none');
-    const goPath = useNavigate();
+
+    useEffect(() => {
+        if (props.user) {
+            location.href = "/projects";
+        }
+    }, []);
 
     const handleSubmit = (e) => {
         e.preventDefault();
@@ -40,9 +45,9 @@ const SignUpPage = () => {
                         .then(() => {
                             signInWithEmailAndPassword(auth, emailVal, passwordVal)
                                 .then(() => {
-                                    goPath("/projects");
+                                    location.href = "/projects";
                                 }).catch(() => {
-                                    goPath("/signin");
+                                    location.href = "/signin";
                                 });
                         })
                         .catch((err) => {

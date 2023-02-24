@@ -32,22 +32,22 @@ const Navbar = (props) => {
             <ul>
                 <li style={{ height: '80px' }}>
                     <Link to="/projects" className="navbar-link-title">
-                        Project
+                        Projects
                     </Link>
                 </li>
                 <li>
                     <Link to="/play" className="navbar-link">
-                        Favorite
-                    </Link>
-                </li>
-                <li>
-                    <Link to="/play" className="navbar-link">
-                        Assets
+                        Favorites
                     </Link>
                 </li>
                 <li>
                     <Link to="/play" className="navbar-link">
                         Tutorial
+                    </Link>
+                </li>
+                <li>
+                    <Link to="/play" className="navbar-link">
+                        Settings
                     </Link>
                 </li>
             </ul>

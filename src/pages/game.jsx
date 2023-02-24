@@ -28,9 +28,9 @@ class GamePage extends React.Component {
 
                     //controller
                     let pressKey = { keyLeft: false, keyRight: false, keyJump: false };
-                    let jump = { status: 0, height: 32, distance: 32, from: boundInfo.h - pixel * 2, count: 1 };
-                    let map = { floor: boundInfo.h - pixel * 2, end: false };
-                    let charaStatus = { speed: 1.8, onGround: false };
+                    let jump = { status: 0, height: 32, distance: 32, from: boundInfo.h - pixel * 2 + 2, count: 1 };
+                    let map = { floor: boundInfo.h - pixel, end: false };
+                    let charaStatus = { speed: 1.8, onGround: true };
 
                     //view
                     const app = new PIXI.Application({
@@ -205,6 +205,7 @@ class GamePage extends React.Component {
                     walkLeft.visible = false;
                     walkRight.visible = true;
                     chara.position.set(chaPos.x, chaPos.y);
+                    chara.width = 30;
                     if (res.chara.x > 0) {
                         app.stage.addChild(chara);
                     }
@@ -283,15 +284,24 @@ class GamePage extends React.Component {
 
                     function showScene() {
                         let maxWallPrior = 4;
+                        let floorWallY = map.floor;
                         wallsGroup.forEach(walls => {
-                            if (chara.x + chara.width >= walls.wall.getGlobalPosition().x - pixel * 2 &&
-                                chara.x <= walls.wall.getGlobalPosition().x + walls.wall.width + pixel * 2 &&
-                                walls.wall.getGlobalPosition().y >= chara.y - 100 &&
-                                walls.wall.getGlobalPosition().y <= chara.y + chara.height + 5) {
-                                let wallPrior = detectWall(walls);
-                                if (wallPrior < maxWallPrior) maxWallPrior = wallPrior;
+                            if (chara.x + chara.width >= walls.wall.getGlobalPosition().x - 5 &&
+                                chara.x <= walls.wall.getGlobalPosition().x + walls.wall.width + 5 &&
+                                walls.wall.getGlobalPosition().y >= chara.y - 100) {
+                                if (walls.wall.getGlobalPosition().y <= chara.y + chara.height + 5) {
+                                    let wallPrior = detectWall(walls);
+                                    if (wallPrior < maxWallPrior) maxWallPrior = wallPrior;
+                                    if (walls.isUp && walls.isMiddle) {
+                                        if (walls.wall.getGlobalPosition().y < floorWallY) floorWallY = walls.wall.getGlobalPosition().y;
+                                    }
+                                } else if (chara.x < walls.wall.getGlobalPosition().x + walls.wall.width &&
+                                    chara.x + chara.width > walls.wall.getGlobalPosition().x) {
+                                    detectWall(walls);
+                                }
                             }
                         });
+                        jump.from = floorWallY - chara.height + 1;
                         switch (maxWallPrior) {
                             case 1:
                                 jump.distance = 0;
@@ -312,15 +322,15 @@ class GamePage extends React.Component {
                     }
 
                     function detectWall(walls) {
-                        if (chara.y < walls.wall.getGlobalPosition().y)
+                        if (chara.y + chara.height < walls.wall.getGlobalPosition().y)
                             walls.isUp = true;
                         else if (chara.y > walls.wall.getGlobalPosition().y + walls.wall.height)
                             walls.isUp = false;
 
-                        if (chara.x > walls.wall.getGlobalPosition().x + walls.wall.width) {
+                        if (chara.x + 5 > walls.wall.getGlobalPosition().x + walls.wall.width) {
                             walls.isMiddle = false;
                             walls.isRight = true;
-                        } else if (chara.x + chara.width < walls.wall.getGlobalPosition().x) {
+                        } else if (chara.x + chara.width - 5 < walls.wall.getGlobalPosition().x) {
                             walls.isMiddle = false;
                             walls.isRight = false;
                         } else {
@@ -328,19 +338,19 @@ class GamePage extends React.Component {
                         }
 
                         if (walls.isUp) {
-                            if (boxesIntersect(chara, walls.wall)) {
-                                jump.from = walls.wall.getGlobalPosition().y - chara.height + 1;
+                            if (chara.x + chara.width - 5 > walls.wall.getGlobalPosition().x &&
+                                chara.x + 5 < walls.wall.getGlobalPosition().x + walls.wall.width) {
+                                return;
                             } else {
-                                jump.from = map.floor;
                                 jump.status = jump.count;
                                 walls.isUp = false;
+                                return;
                             }
-                        }
-                        if (!walls.isUp) {
+                        } else if (!walls.isUp) {
                             if (walls.isMiddle) {
                                 for (let i = 1; i <= 3; i++) {
-                                    if (chara.x + chara.width > walls.wall.getGlobalPosition().x &&
-                                        chara.x < walls.wall.getGlobalPosition().x + walls.wall.width &&
+                                    if (chara.x + chara.width - 3 > walls.wall.getGlobalPosition().x &&
+                                        chara.x + 3 < walls.wall.getGlobalPosition().x + walls.wall.width &&
                                         (chara.y == walls.wall.getGlobalPosition().y + pixel * i ||
                                             chara.y == walls.wall.getGlobalPosition().y + pixel * i + 1)) {
                                         return i;
@@ -348,12 +358,14 @@ class GamePage extends React.Component {
                                 }
                             }
 
-                            if (boxesIntersect(chara, walls.wall)) {
+                            if (!walls.isMiddle && boxesIntersect(chara, walls.wall)) {
                                 if (!walls.isRight) {
                                     chara.x = walls.wall.getGlobalPosition().x - chara.width;
+                                    return;
                                 }
                                 if (walls.isRight) {
                                     chara.x = walls.wall.getGlobalPosition().x + walls.wall.width;
+                                    return;
                                 }
                             }
                         }
@@ -506,6 +518,7 @@ class GamePage extends React.Component {
 
     componentWillUnmount() {
         document.getElementById("game-window").remove();
+        location.reload();
     }
 
     render() {
@@ -514,9 +527,10 @@ class GamePage extends React.Component {
             <div className='container'>
                 <div id="game-window">
                     <div id="score">
-                        <img src="./image/star.png" alt="" />
-                        <p>x <span id="score-number">0</span></p>
-                        <p className='score-slash'>/<span id="score-goal">{this.state.minStarNum}</span></p>
+                        <img src="../image/starTool.png" alt="" />
+                        <div>x <span id="score-number">0</span>
+                            <p className='score-slash'>/<span id="score-goal">{this.state.minStarNum}</span></p>
+                        </div>
                     </div>
                 </div>
                 <div className='container-btn-group'>
