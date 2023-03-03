@@ -2,8 +2,8 @@ import React, { useState, useEffect } from 'react';
 import { Link } from "react-router-dom";
 import { Input, FormBtn, OtherFormBtn } from '../components/form.jsx';
 import { auth, db } from '../auth.js';
-import { createUserWithEmailAndPassword, updateProfile, signInWithEmailAndPassword } from "firebase/auth";
-import { doc, setDoc } from "firebase/firestore"
+import { createUserWithEmailAndPassword, updateProfile, signInWithEmailAndPassword, signInWithPopup, GoogleAuthProvider } from "firebase/auth";
+import { doc, setDoc, getDoc } from "firebase/firestore";
 
 const SignUpPage = (props) => {
     const [name, useName] = useState(false);
@@ -12,12 +12,40 @@ const SignUpPage = (props) => {
     const [className, useClassName] = useState('form-btn-disabled');
     const [errMsg, useErrMsg] = useState('');
     const [display, useDisplay] = useState('none');
+    const provider = new GoogleAuthProvider();
 
     useEffect(() => {
         if (props.user) {
             location.href = "/projects";
         }
     }, []);
+
+    const handleGoogleLogin = () => {
+        signInWithPopup(auth, provider)
+            .then((result) => {
+                const setData = async () => {
+                    const docSnap = await getDoc(doc(db, "user", result.user.uid));
+                    if (!docSnap.exists()) {
+                        console.log(docSnap.data())
+                        await setDoc(doc(db, "user", result.user.uid), {
+                            name: result.user.displayName,
+                            projectNum: 0
+                        }, { merge: true });
+                    }
+                }
+                setData()
+                    .then(() => {
+                        location.href = "/projects";
+                    })
+                    .catch((err) => {
+                        console.log(err);
+                    });
+            }).catch((error) => {
+                const errorMsg = error.code.split('/')[1].replaceAll('-', ' ');
+                useDisplay('flex');
+                useErrMsg(errorMsg);
+            });
+    }
 
     const handleSubmit = (e) => {
         e.preventDefault();
@@ -36,8 +64,6 @@ const SignUpPage = (props) => {
                     const setData = async () => {
                         await setDoc(doc(db, "user", result.user.uid), {
                             name: nameVal,
-                            profile: profile,
-                            email: emailVal,
                             projectNum: 0
                         }, { merge: true });
                     }
@@ -120,7 +146,7 @@ const SignUpPage = (props) => {
                     <Input type='email' email={email} handleChange={handleEmailChange} />
                     <Input type='password' password={password} handleChange={handlePasswordChange} />
                     <FormBtn value='CREATE ACCOUNT' class={className} />
-                    <OtherFormBtn action='Up' value='Google' />
+                    <OtherFormBtn action='Up' value='Google' handleClick={handleGoogleLogin} />
                 </form>
             </div>
         </div>

@@ -1,14 +1,13 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from "react-router-dom";
 import { db } from '../auth.js';
 import { doc, getDoc, getDocs, deleteDoc, updateDoc, setDoc, collection, writeBatch, serverTimestamp } from "firebase/firestore";
 
 const pixel = 32;
 
-export const takeData = async (mode, uid) => {
-    const projectId = location.pathname.split('/')[2];
+export const takeData = async (mode, uid, projectId) => {
+    const path = doc(db, 'user', uid, 'project', projectId);
     if (mode === 'edit') {
-        const path = doc(db, 'user', uid, 'project', projectId);
         const project = await getDoc(path);
         if (project.data().firstTimeEdit) {
             await updateDoc(path, {
@@ -32,6 +31,7 @@ export const takeData = async (mode, uid) => {
     const chara = await getDoc(chageObj('chara'));
     const door = await getDoc(chageObj('door'));
     const map = await getDoc(chageObj('map'));
+    const name = await getDoc(path);
 
     const stars = await getDocs(chageObj('map', 'stars'));
     let starGroup = [];
@@ -57,7 +57,8 @@ export const takeData = async (mode, uid) => {
         door: door.data(),
         map: map.data(),
         stars: starGroup,
-        walls: wallGroup
+        walls: wallGroup,
+        name: name.data().name
     };
 };
 
@@ -73,6 +74,7 @@ export const SaveBtn = (props) => {
         let walls = props.items[2].children;
         let starMinNum = parseInt(document.getElementById('input-star-num').value, 10);
         if (starMinNum > stars.length) starMinNum = stars.length;
+        let name = document.getElementById('input-project-name').value;
 
         let arr = [];
         walls.forEach(wall => {
@@ -108,6 +110,7 @@ export const SaveBtn = (props) => {
             wallSnapshot.forEach(doc => {
                 deleteDoc(chageObj('map', 'walls', doc.id));
             });
+            await updateDoc(doc(db, 'user', uid, 'project', projectId), { name: name });
         };
         takeData()
             .then(() => {
@@ -169,5 +172,68 @@ export const SaveBtn = (props) => {
                 {spanText}
             </span>
         </button>
+    )
+}
+
+export const DeleteBtn = (props) => {
+    const projectId = location.pathname.split('/')[2];
+    const uid = props.user.uid;
+    const goPath = useNavigate();
+    async function handleClick() {
+        await deleteDoc(doc(db, "user", uid, "project", projectId));
+        goPath('/projects');
+    }
+
+    return (
+        <button
+            className='delete-yes'
+            onClick={handleClick}>
+            DELETE
+        </button>
+    )
+}
+
+export const PublishBtn = (props) => {
+    const path = doc(db, 'user', props.uid, 'project', props.projectId);
+    useEffect(() => {
+        const takeData = async () => {
+            const docSnap = await getDoc(path);
+            const publishSwitch = document.getElementById('publishSwitch');
+            if (docSnap.exists() && docSnap.data().release) {
+                publishSwitch.checked = true;
+                props.showCopy();
+            }
+        }
+        takeData()
+            .catch((err) => {
+                console.log(err);
+            });
+    }, []);
+    async function handleChange(e) {
+        if (e.target.checked) {
+            props.showCopy();
+            await updateDoc(path, {
+                release: true
+            });
+        } else {
+            props.hideCopy();
+            await updateDoc(path, {
+                release: false
+            });
+        }
+    }
+    return (
+        <div className="onoffswitch">
+            <input
+                type="checkbox"
+                onChange={handleChange}
+                name="onoffswitch"
+                id="publishSwitch"
+            />
+            <label htmlFor="publishSwitch">
+                <span className="onoffswitch-inner"></span>
+                <span className="onoffswitch-switch"></span>
+            </label>
+        </div>
     )
 }

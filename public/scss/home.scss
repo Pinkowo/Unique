@@ -1,0 +1,84 @@
+.home {
+    background-color: $header-bg-color;
+
+    .home-panel {
+        margin-left: 50px;
+        height: 480px;
+
+        .home-info {
+            color: #fff;
+            margin-bottom: 60px;
+
+            h3 {
+                font-weight: 500;
+            }
+        }
+
+        .home-btn-signup {
+            width: 100px;
+            height: 50px;
+            background-color: $header-bg-color;
+            border: 3px solid $navbar-bg-color;
+            border-radius: 5px;
+            font-size: 14px;
+            margin: auto;
+            margin-top: 80px;
+
+            &:hover {
+                background-color: $navbar-bg-color;
+            }
+
+            a {
+                width: 100%;
+                height: 100%;
+                text-decoration: none;
+                color: $navbar-bg-color;
+                @include d-flex;
+
+                &:hover {
+                    color: $header-bg-color;
+                    font-weight: 700;
+                    font-size: 16px;
+                    transition: all 0.5s;
+                }
+            }
+        }
+    }
+}
+
+.keyboard {
+    display: grid;
+    grid-template-rows: 55px;
+    grid-template-columns: repeat(8, 25px);
+    grid-row-gap: 20px;
+    justify-items: space-between;
+    align-items: center;
+
+    div {
+        background-color: #fff;
+        border-radius: 10px;
+        @include d-flex;
+        font-size: 24px;
+        border-bottom: 5px solid $content-bg-color;
+    }
+
+    .arrow {
+        font-weight: 700;
+        width: 50px;
+        height: 50px;
+    }
+
+    .arrow-left {
+        grid-column-start: 2;
+    }
+
+    .arrow-right {
+        grid-column-start: 6;
+    }
+
+    .space {
+        width: 200px;
+        height: 50px;
+        grid-column-start: 1;
+    }
+}

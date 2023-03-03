@@ -1,11 +1,21 @@
 import React, { useState, useEffect } from 'react';
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import { auth } from '../auth.js';
 import { signOut } from "firebase/auth";
 
 const Header = (props) => {
     const [name, useName] = useState('');
     const [photo, usePhoto] = useState(0);
+    const [display, useDisplay] = useState('none');
+    const data = useLocation();
+
+    useEffect(() => {
+        if (data.state === '/home') {
+            useDisplay('inline');
+        } else {
+            useDisplay('none');
+        }
+    }, [data]);
 
     useEffect(() => {
         if (props.user) {
@@ -36,7 +46,10 @@ const Header = (props) => {
     return (
         <div className="header">
             <div className="header-container">
-                <a href='/'>Unique</a>
+                <Link to={'/'} state={'/home'}>
+                    Unique
+                    <span style={{ display }}>◂</span>
+                </Link>
                 <div id="signin">
                     <Link to={`/signin`} className="navbar-link-title">
                         <i className="fa fa-sign-in" aria-hidden="true"></i>

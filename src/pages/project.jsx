@@ -8,6 +8,7 @@ const ProjectPage = (props) => {
     const [i, useI] = useState(0);
     const [uid, useUid] = useState(0);
     const goPath = useNavigate();
+    const [clickBtn, useClickBtn] = useState(false);
 
     useEffect(() => {
         if (props.user) {
@@ -40,24 +41,28 @@ const ProjectPage = (props) => {
     }, []);
 
     function handleClick() {
-        const time = serverTimestamp();
-        const pushData = async () => {
-            const docRef = await addDoc(collection(db, "user", uid, "project"), {
-                firstTimeEdit: true,
-                name: 'project' + i,
-                time: time
-            });
-            await updateDoc(doc(db, "user", uid), { projectNum: i });
-            const path = '/edit/' + docRef.id;
-            goPath(path);
+        if (!clickBtn) {
+            useClickBtn(true);
+            const time = serverTimestamp();
+            const pushData = async () => {
+                const docRef = await addDoc(collection(db, "user", uid, "project"), {
+                    firstTimeEdit: true,
+                    name: 'project' + i,
+                    time: time,
+                    release: false
+                });
+                await updateDoc(doc(db, "user", uid), { projectNum: i });
+                const path = '/edit/' + docRef.id;
+                goPath(path);
+            }
+            pushData()
+                .catch((err) => {
+                    console.log(err);
+                });
         }
-        pushData()
-            .catch((err) => {
-                console.log(err);
-            });
     }
     return (
-        <div className="container" style={{ 'justifyContent': 'start', 'flexDirection': 'column' }}>
+        <div className="container" style={{ 'alignItems': 'start' }}>
             <h1 className='project-title'>Projects</h1>
             <Project items={items} handleClick={handleClick} />
         </div>
@@ -65,12 +70,11 @@ const ProjectPage = (props) => {
 }
 
 const Project = props => {
-    //字數限制必須少於20個字
     return (
         <ul className='project-list'>
             {props.items.map(item => (
                 <li key={item.id}>
-                    <Link to={'/edit/' + item.id} >
+                    <Link to={'/edit/' + item.id}>
                         <div className='project-img'>
                             <img src="../image/icon_edit_white.png" className='img-icon' />
                             <img src="../image/bg.jpg" className='img-main' />

@@ -140,7 +140,7 @@ export const FormBtn = props => {
 
 export const OtherFormBtn = props => {
     return (
-        <button className='form-btn-other'>
+        <button className='form-btn-other' onClick={props.handleClick}>
             <img src='../image/icon_google.png' />
             Sign {props.action} with {props.value}
         </button>

@@ -12,9 +12,10 @@ $btn-hover-color: #343434;
 $btn-active-color: #161616;
 $tooltip-color: rgba(0, 0, 0, 0.555);
 $alert-color: rgb(212, 0, 0);
+$scrollbar-color: #9e9e9e;
 
-@mixin box-shadow($v, $h: 0) {
-    box-shadow: $v $h 5px 1px rgba(113, 113, 113, 0.5);
+@mixin box-shadow($v: 0, $h: 0, $b: 5px) {
+    box-shadow: $v $h $b 1px rgba(113, 113, 113, 0.5);
 }
 
 @mixin d-flex($j: center, $a: center) {
@@ -29,6 +30,8 @@ $alert-color: rgb(212, 0, 0);
     padding: $p;
     outline: none;
     cursor: pointer;
+    font-family: 'Cubic';
+    background-color: #00000000;
 }
 
 html,
@@ -44,9 +47,10 @@ body {
 }
 
 
-
+@import "./scss/home.scss";
 @import "./scss/header.scss";
 @import "./scss/canvas.scss";
 @import "./scss/section.scss";
 @import "./scss/form.scss";
 @import "./scss/project.scss";
+@import "./scss/editPanel.scss";

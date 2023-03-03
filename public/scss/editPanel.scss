@@ -1,0 +1,291 @@
+%tool-tip {
+    i {
+        margin-right: 5px;
+        font-size: 12px;
+        position: relative;
+
+        .tooltiptext {
+            width: 150px;
+            font-size: 14px;
+            background-color: $tooltip-color;
+            color: #fff;
+            text-align: center;
+            padding: 10px;
+            border-radius: 6px;
+            position: absolute;
+            z-index: 1;
+            top: -12px;
+            right: 200%;
+            opacity: 0;
+            transition: opacity 0.8s;
+            visibility: hidden;
+            font-family: Cubic;
+
+            &::after {
+                content: " ";
+                position: absolute;
+                top: 50%;
+                left: 100%;
+                margin-top: -5px;
+                border-width: 5px;
+                border-style: solid;
+                border-color: transparent transparent transparent $tooltip-color;
+            }
+        }
+
+        &:hover .tooltiptext {
+            opacity: 1;
+            visibility: visible;
+        }
+    }
+}
+
+#edit-panel {
+    position: absolute;
+    right: 0;
+    width: 200px;
+    height: 100%;
+    color: $navbar-color;
+    background-color: #fff;
+    @include box-shadow(-1px);
+
+    h2 {
+        color: $btn-hover-color;
+        @include d-flex;
+        margin: 30px;
+    }
+
+    form {
+        width: 80%;
+        margin: auto;
+
+        >div {
+            margin-top: 25px;
+            @include d-flex;
+            flex-direction: column;
+
+            label {
+                font-weight: 700;
+                font-size: 16px;
+                @extend %tool-tip;
+            }
+
+            input {
+                width: 100px;
+                margin-top: 10px;
+                font-family: Cubic;
+            }
+        }
+    }
+
+    .edit-delete {
+        position: absolute;
+        bottom: 30px;
+        right: 40px;
+
+        button {
+            @include btn-init;
+            font-weight: 700;
+            color: $alert-color;
+            background-color: $content-bg-color;
+            height: 30px;
+            width: 120px;
+            border-radius: 8px;
+            @include box-shadow(0, 1px, 1px);
+
+            &:hover {
+                color: #fff;
+                background-color: $alert-color;
+                box-shadow: none;
+                margin-top: 2px;
+            }
+        }
+    }
+
+    .delete-window {
+        position: fixed;
+        top: calc(50% - 72px);
+        left: calc(50% - 172px);
+        background-color: #000000e8;
+        color: #fff;
+        border: 3px solid #fff;
+        width: 350px;
+        height: 150px;
+        border-radius: 10px;
+        @include d-flex;
+        flex-direction: column;
+        @include box-shadow(0, 3px);
+
+        .delete-close {
+            position: absolute;
+            top: calc(50% - 60px);
+            left: calc(50% + 150px);
+            cursor: pointer;
+            @include btn-init;
+            color: #fff;
+        }
+
+        .delete-btns {
+            width: 80%;
+            @include d-flex(space-around);
+            margin-top: 20px;
+
+            button {
+                color: #fff;
+                @include btn-init;
+                width: 100px;
+                height: 20px;
+                border-radius: 3px;
+            }
+
+            .delete-yes {
+                color: $alert-color;
+                font-weight: 700;
+
+                &:hover {
+                    background-color: $alert-color;
+                    color: #fff;
+                }
+            }
+
+            .delete-no {
+                &:hover {
+                    background-color: $navbar-color;
+                    color: #fff;
+                }
+            }
+        }
+    }
+}
+
+.publish-switch {
+    @include d-flex;
+    flex-direction: column;
+    margin-top: 25px;
+
+    .publish-title {
+        margin-bottom: 10px;
+        font-weight: 700;
+        font-size: 16px;
+        @extend %tool-tip;
+    }
+
+    .onoffswitch {
+        position: relative;
+        width: 100px;
+
+        input {
+            position: absolute;
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        label {
+            display: block;
+            overflow: hidden;
+            cursor: pointer;
+            border: 2px solid $scrollbar-color;
+            border-radius: 20px;
+
+            .onoffswitch-inner {
+                display: block;
+                width: 200%;
+                margin-left: -100%;
+                transition: margin 0.3s ease-in 0s;
+
+                &:before,
+                &:after {
+                    display: block;
+                    float: left;
+                    width: 50%;
+                    height: 30px;
+                    padding: 0;
+                    line-height: 30px;
+                    font-size: 14px;
+                    color: white;
+                    font-weight: bold;
+                    box-sizing: border-box;
+                }
+
+                &:before {
+                    content: "Public";
+                    padding-left: 15px;
+                    background-color: #1099bb;
+                    color: #FFFFFF;
+                }
+
+                &:after {
+                    content: "Draft";
+                    padding-right: 15px;
+                    background-color: #EEEEEE;
+                    color: $navbar-color;
+                    text-align: right;
+                }
+            }
+
+            .onoffswitch-switch {
+                display: block;
+                width: 18px;
+                margin: 6px;
+                background: #FFFFFF;
+                position: absolute;
+                top: 0;
+                bottom: 0;
+                right: 64px;
+                border: 2px solid $scrollbar-color;
+                border-radius: 20px;
+                transition: all 0.3s ease-in 0s;
+            }
+        }
+
+        input:checked+label .onoffswitch-inner {
+            margin-left: 0;
+        }
+
+        input:checked+label .onoffswitch-switch {
+            right: 0px;
+        }
+    }
+
+    .publish-copy {
+
+        button {
+            @include btn-init;
+            font-weight: 700;
+            font-size: 12px;
+            color: #1099bb;
+
+            &:hover {
+                border-bottom: 2px solid #1099bb;
+            }
+
+            span {
+                i {
+                    margin-left: 5px;
+                }
+            }
+        }
+
+        .copied {
+            margin-top: 15px;
+            color: $navbar-color;
+
+            &:hover {
+                border: 0;
+                cursor: default;
+            }
+        }
+
+        .appear {
+            opacity: 1;
+            margin-top: 15px;
+            transition: opacity 0.5s, margin 0.5s;
+        }
+
+        .disappear {
+            opacity: 0;
+            transition: visibility 0.5s, opacity 0.5s, margin 0.5s;
+            visibility: hidden;
+        }
+    }
+}

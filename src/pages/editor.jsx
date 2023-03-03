@@ -13,7 +13,8 @@ class EditorPage extends React.Component {
             chara: {},
             door: {},
             items: [],
-            starMinNum: 0
+            starMinNum: 0,
+            name: ''
         };
         this.handlePlay = this.handlePlay.bind(this);
         this.handleStarChange = this.handleStarChange.bind(this);
@@ -22,11 +23,13 @@ class EditorPage extends React.Component {
     }
     componentDidMount() {
         if (this.props.user) {
-            takeData('edit', this.props.user.uid)
+            const projectId = location.pathname.split('/')[2];
+            takeData('edit', this.props.user.uid, projectId)
                 .then((res) => {
                     const pixel = 32;
                     const stage = { w: pixel * 23, h: pixel * 15 };
                     this.setState({ starMinNum: res.map.starMinNum });
+                    this.setState({ name: res.name });
 
                     this.setState({
                         boundInfo: { w: res.map.w, h: res.map.h }
@@ -774,6 +777,8 @@ class EditorPage extends React.Component {
                     star={this.state.starMinNum}
                     starNum={this.state.stars}
                     handleStarChange={this.handleStarChange}
+                    name={this.state.name}
+                    user={this.props.user}
                 />
             </div>
         )
