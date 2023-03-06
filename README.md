@@ -37,10 +37,10 @@ The website is built using the following technologies:
 1. HTML
 2. SCSS
 3. JavaScript
-    1. Pixi.JS
-    2. JSX
-    3. Ajax
-4. WebGL
+    1. JSX
+    2. Ajax
+4.Pixi.JS
+    1. WebGL
 5. React
     1. useState, useEffect
     2. Link, useNavigate, useLocation
