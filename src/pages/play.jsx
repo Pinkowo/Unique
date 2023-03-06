@@ -8,15 +8,18 @@ const PlayPage = (props) => {
     const goPath = useNavigate();
     const user = location.pathname.split('/')[1];
     const projectId = location.pathname.split('/')[2];
-    const [uid, useUid] = useState(user === 'play' ? props.user.uid : user);
+    const uid = user === 'play' ? props.user.uid : user;
+    const [info, setInfo] = useState({ userName: '', projectName: '' });
     if (user === 'play' && !props.user) {
         goPath('/signin');
     }
     if (user !== 'play') {
         const takeData = async () => {
-            const path = doc(db, 'user', user, 'project', projectId);
-            const docSnap = await getDoc(path);
-            if (!docSnap.exists() || !docSnap.data().release) {
+            const docSnap = await getDoc(doc(db, 'user', user, 'project', projectId));
+            if (docSnap.exists() && docSnap.data().release) {
+                const userDoc = await getDoc(doc(db, 'user', user));
+                setInfo({ userName: userDoc.data().name, projectName: docSnap.data().name });
+            } else {
                 goPath('/');
             }
         }
@@ -28,6 +31,19 @@ const PlayPage = (props) => {
 
     return (
         <div className='container'>
+            {user !== 'play' &&
+                <div className='game-info'>
+                    <h1>{info.projectName}</h1>
+                    <h3>{info.userName}</h3>
+                    {/* <div className='game-favorite'>
+                        <button>Add to Favorites</button>
+                    </div> */}
+                    <div className='game-refresh'>
+                        <button onClick={() => { location.reload() }}>
+                            <i className="fa fa-repeat" aria-hidden="true"></i>
+                        </button>
+                    </div>
+                </div>}
             <GamePage uid={uid} projectId={projectId} />
             {user === 'play' &&
                 <div className='container-btn-group'>
@@ -39,6 +55,12 @@ const PlayPage = (props) => {
                     </Link>
                 </div>}
         </div>
+    )
+}
+
+const FavoriteBtn = () => {
+    return (
+        <button>Add to Favorites</button>
     )
 }
 

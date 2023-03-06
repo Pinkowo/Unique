@@ -121,7 +121,7 @@ const CopyBtn = (props) => {
         }
     }, [props.show])
     function handleCopy() {
-        navigator.clipboard.writeText('unique-game-editor.web.app/' + props.uid + '/' + props.projectId);
+        navigator.clipboard.writeText('https://unique-game-editor.web.app/' + props.uid + '/' + props.projectId);
         useClick(true);
         setTimeout(() => {
             useClick(false);

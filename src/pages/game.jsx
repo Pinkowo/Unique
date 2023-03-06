@@ -280,6 +280,8 @@ class GamePage extends React.Component {
                         scene.visible = false;
                         endScene.visible = true;
                         doorOpen.visible = false;
+                        jump.from = map.floor;
+                        jump.status = 1;
                         map.end = true;
                     }
                     bg1.x -= 0.5;

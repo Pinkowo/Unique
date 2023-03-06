@@ -7,6 +7,7 @@ const pixel = 32;
 
 export const takeData = async (mode, uid, projectId) => {
     const path = doc(db, 'user', uid, 'project', projectId);
+    let tutoStep = 0;
     if (mode === 'edit') {
         const project = await getDoc(path);
         if (project.data().firstTimeEdit) {
@@ -26,6 +27,8 @@ export const takeData = async (mode, uid, projectId) => {
                 x: 0,
                 y: 0
             });
+            const projNum = await getDoc(doc(db, 'user', uid));
+            tutoStep = projNum.data().projectNum;
         }
     }
     const chara = await getDoc(chageObj('chara'));
@@ -58,7 +61,8 @@ export const takeData = async (mode, uid, projectId) => {
         map: map.data(),
         stars: starGroup,
         walls: wallGroup,
-        name: name.data().name
+        name: name.data().name,
+        tutorial: tutoStep == 1 ? 1 : 0
     };
 };
 

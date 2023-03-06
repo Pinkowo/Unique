@@ -44,16 +44,16 @@ const Navbar = (props) => {
             <ul>
                 <Navigation name='Projects' link='/projects' class='navbar-link-title'
                     current={current} handleChange={handleChange} />
-                <Navigation name='Favorites' link='/' class='navbar-link'
+                {/* <Navigation name='Favorites' link='/' class='navbar-link'
+                    current={current} handleChange={handleChange} /> */}
+                <Navigation name='Tutorial' link='/tutorial' class='navbar-link'
                     current={current} handleChange={handleChange} />
-                <Navigation name='Tutorial' link='/' class='navbar-link'
-                    current={current} handleChange={handleChange} />
-                <Navigation name='Settings' link='/' class='navbar-link'
-                    current={current} handleChange={handleChange} />
+                {/* <Navigation name='Settings' link='/' class='navbar-link'
+                    current={current} handleChange={handleChange} /> */}
             </ul>
-            <button onClick={handleClick}>
+            <div onClick={handleClick}>
                 <i className={arrowClass} aria-hidden="true"></i>
-            </button>
+            </div>
         </div >
     )
 }

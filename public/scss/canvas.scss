@@ -128,6 +128,38 @@
     }
 }
 
+.game-info {
+    margin-right: 30px;
+    height: 480px;
+    width: 200px;
+    color: $btn-hover-color;
+
+    h1 {
+        @include d-flex;
+    }
+
+    h3 {
+        @include d-flex;
+        color: $navbar-color;
+    }
+
+
+    .game-refresh {
+        @include d-flex;
+        margin-top: 100px;
+
+        button {
+            @include btn-init;
+            font-size: 32px;
+            color: $navbar-color;
+
+            &:hover {
+                color: $btn-hover-color;
+            }
+        }
+    }
+}
+
 @keyframes fadein {
     0% {
         opacity: 0;

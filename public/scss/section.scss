@@ -51,8 +51,9 @@
             }
         }
 
-        button {
-            @include btn-init;
+        div {
+            cursor: pointer;
+            @include d-flex;
             padding-right: 5px;
             border-radius: 0 10px 10px 0;
             height: 50px;

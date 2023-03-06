@@ -4,7 +4,7 @@ import GamePage from './game.jsx';
 import { db } from '../auth.js';
 import { collection, getDocs, query, where } from "firebase/firestore";
 
-const HomePage = () => {
+const HomePage = (props) => {
     const [value, setValue] = useState({
         userid: '',
         userName: '',
@@ -55,10 +55,18 @@ const HomePage = () => {
             <div className='home-panel'>
                 <Info gameName={value.projectName} authorName={value.userName} />
                 <Keyboard />
-                <div className='home-btn-signup'>
-                    <Link to={`/signup`}>
-                        Try It
-                    </Link>
+                <div className='home-btn'>
+                    <div className='home-btn-play'>
+                        <Link to={value.userid + '/' + value.projectId}>
+                            Play
+                        </Link>
+                    </div>
+                    {!props.user &&
+                        <div className='home-btn-signup'>
+                            <Link to={`/signup`}>
+                                Sign Up
+                            </Link>
+                        </div>}
                 </div>
             </div>
         </div>

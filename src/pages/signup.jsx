@@ -26,7 +26,6 @@ const SignUpPage = (props) => {
                 const setData = async () => {
                     const docSnap = await getDoc(doc(db, "user", result.user.uid));
                     if (!docSnap.exists()) {
-                        console.log(docSnap.data())
                         await setDoc(doc(db, "user", result.user.uid), {
                             name: result.user.displayName,
                             projectNum: 0

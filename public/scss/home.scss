@@ -7,42 +7,49 @@
 
         .home-info {
             color: #fff;
-            margin-bottom: 60px;
+            margin-bottom: 80px;
+            width: 200px;
 
             h3 {
                 font-weight: 500;
             }
         }
 
-        .home-btn-signup {
-            width: 100px;
-            height: 50px;
-            background-color: $header-bg-color;
-            border: 3px solid $navbar-bg-color;
-            border-radius: 5px;
-            font-size: 14px;
+        .home-btn {
+            @include d-flex(space-between);
             margin: auto;
-            margin-top: 80px;
+            margin-top: 60px;
 
-            &:hover {
-                background-color: $navbar-bg-color;
-            }
-
-            a {
-                width: 100%;
-                height: 100%;
-                text-decoration: none;
-                color: $navbar-bg-color;
-                @include d-flex;
+            .home-btn-signup,
+            .home-btn-play {
+                width: 80px;
+                height: 50px;
+                background-color: $header-bg-color;
+                border: 3px solid $navbar-bg-color;
+                border-radius: 5px;
+                font-size: 14px;
 
                 &:hover {
-                    color: $header-bg-color;
-                    font-weight: 700;
-                    font-size: 16px;
-                    transition: all 0.5s;
+                    background-color: $navbar-bg-color;
+                }
+
+                a {
+                    width: 100%;
+                    height: 100%;
+                    text-decoration: none;
+                    color: $navbar-bg-color;
+                    @include d-flex;
+
+                    &:hover {
+                        color: $header-bg-color;
+                        font-weight: 700;
+                        font-size: 16px;
+                        transition: all 0.5s;
+                    }
                 }
             }
         }
+
     }
 }
 
@@ -53,6 +60,7 @@
     grid-row-gap: 20px;
     justify-items: space-between;
     align-items: center;
+    margin: auto;
 
     div {
         background-color: #fff;

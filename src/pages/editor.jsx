@@ -1,6 +1,7 @@
 import React from 'react';
 import { SaveBtn, takeData } from '../components/gamedata.jsx';
 import EditPanel from '../components/editPanel.jsx';
+import { tutorial, tutorialMaskClose } from '../components/mask.jsx';
 
 
 class EditorPage extends React.Component {
@@ -30,6 +31,7 @@ class EditorPage extends React.Component {
                     const stage = { w: pixel * 23, h: pixel * 15 };
                     this.setState({ starMinNum: res.map.starMinNum });
                     this.setState({ name: res.name });
+                    let tutorialStep = res.tutorial;
 
                     this.setState({
                         boundInfo: { w: res.map.w, h: res.map.h }
@@ -294,6 +296,21 @@ class EditorPage extends React.Component {
                             }
                         }
 
+                        //mask
+                        const tutorialGroup1 = new PIXI.Container();
+                        const tutorialGroup2 = new PIXI.Container();
+                        const tutorialGroup3 = new PIXI.Container();
+                        const tutorialGroup4 = new PIXI.Container();
+                        const tutorialGroup5 = new PIXI.Container();
+                        const tutorialGroup6 = new PIXI.Container();
+                        const tutorialGroup7 = new PIXI.Container();
+                        function onClick(tutorialGroup) {
+                            app.stage.removeChild(tutorialGroup);
+                            tutorialStep = 0;
+                        }
+                        if (tutorialStep == 1) {
+                            tutorial(tutorialStep, tutorialGroup1, app.stage, onClick);
+                        }
 
                         //controller
                         let dragTarget = null;
@@ -397,6 +414,9 @@ class EditorPage extends React.Component {
                                     chara.position.set(0, 0);
                                     charaTool.interactive = true;
                                     charaTool.alpha = 1;
+                                    if (tutorialStep == 6) {
+                                        tutorial(tutorialStep, tutorialGroup6, app.stage, onClick);
+                                    }
                                 }
                                 if (this === door) {
                                     door.position.set(0, 0);
@@ -413,6 +433,10 @@ class EditorPage extends React.Component {
                             app.renderer.events.cursorStyles.default = "url('../image/close.png'),auto";
                             app.renderer.events.cursorStyles.pointer = "url('../image/close.png'),auto";
                             mode = 'delete';
+                            if (tutorialStep == 5) {
+                                tutorialMaskClose(tutorialGroup5, app.stage);
+                                tutorialStep = 6;
+                            }
                         }
                         function onDeleteEnd() {
                             crossTool.visible = false;
@@ -420,6 +444,11 @@ class EditorPage extends React.Component {
                             app.renderer.events.cursorStyles.default = 'inherit';
                             app.renderer.events.cursorStyles.pointer = 'pointer';
                             mode = 'draw';
+                            if (tutorialStep == 6) {
+                                tutorialMaskClose(tutorialGroup6, app.stage);
+                                tutorialStep = 7;
+                                tutorial(tutorialStep, tutorialGroup7, app.stage, onClick);
+                            }
                         }
 
                         //drag
@@ -437,6 +466,10 @@ class EditorPage extends React.Component {
                                     onDragGenerate.call(door);
                                 }
                                 if (this === charaTool) {
+                                    if (tutorialStep == 1) {
+                                        tutorialMaskClose(tutorialGroup1, app.stage);
+                                        tutorialStep = 2;
+                                    }
                                     scene.addChild(chara);
                                     charaTool.alpha = 0.5;
                                     charaTool.interactive = false;
@@ -492,6 +525,8 @@ class EditorPage extends React.Component {
                                         if (canPlace) {
                                             dragTarget.x = x * pixel - 16;
                                             dragTarget.y = y * pixel - 16;
+                                            if (tutorialStep == 2)
+                                                tutorial(tutorialStep, tutorialGroup2, app.stage, onClick);
                                         } else {
                                             dragTarget.x = originPos.x;
                                             dragTarget.y = originPos.y;
@@ -609,6 +644,11 @@ class EditorPage extends React.Component {
                                 if (this === wallTool) {
                                     wallCursor = new PIXI.Sprite(wallTexture);
                                     drawTarget = wallCursor;
+                                    if (tutorialStep == 2) {
+                                        tutorialMaskClose(tutorialGroup2, app.stage);
+                                        tutorialStep = 3;
+                                        tutorial(tutorialStep, tutorialGroup3, app.stage, onClick);
+                                    }
                                 }
                                 this.alpha = 0.5;
                                 drawTarget.zIndex = 100;
@@ -622,8 +662,7 @@ class EditorPage extends React.Component {
                             if (drawTarget != null) {
                                 if (!isDrawing) {
                                     isDrawing = true;
-                                }
-                                else if (isDrawing) {
+                                } else {
                                     const x = Math.round(drawTarget.x / pixel - 3) + moveX;
                                     const y = Math.round(drawTarget.y / pixel) + moveY;
                                     if (x - moveX >= 0) {
@@ -651,6 +690,11 @@ class EditorPage extends React.Component {
                                         drawTarget = null;
                                         isDrawing = false;
                                         app.stage.off('pointermove', onDrawMove);
+                                        if (tutorialStep == 4) {
+                                            tutorialMaskClose(tutorialGroup4, app.stage);
+                                            tutorialStep = 5;
+                                            tutorial(tutorialStep, tutorialGroup5, app.stage, onClick);
+                                        }
                                     }
                                 }
                             }
@@ -673,6 +717,11 @@ class EditorPage extends React.Component {
                             }
                         }
                         function onDrawLotsEnd() {
+                            if (tutorialStep == 3) {
+                                tutorialMaskClose(tutorialGroup3, app.stage);
+                                tutorialStep = 4;
+                                tutorial(tutorialStep, tutorialGroup4, app.stage, onClick);
+                            }
                             app.stage.off('pointermove', onDrawEnd);
                             app.stage.off('pointermove', onDeleteLotsMove);
                         }
@@ -704,6 +753,9 @@ class EditorPage extends React.Component {
                                     scene.removeChild(chara);
                                     charaTool.interactive = true;
                                     charaTool.alpha = 1;
+                                    if (tutorialStep == 6) {
+                                        tutorial(tutorialStep, tutorialGroup6, app.stage, onClick);
+                                    }
                                 }
                                 if (typeof door != "undefined" &&
                                     door.x >= x * pixel - pixel && door.x <= x * pixel &&
@@ -733,7 +785,7 @@ class EditorPage extends React.Component {
     }
 
     handlePlay() {
-        console.log("test");
+
     }
 
     handleStarChange(e) {
