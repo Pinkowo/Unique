@@ -1,0 +1,73 @@
+# Unique
+Unique is an online game editor that allows users to create their games by clicking and dragging map objects with a cursor. After completing the game, users can share its URL with others for them to play. 
+
+## Features
+* **Edit game levels:** Users can edit game levels directly on the website and can set up various objects and environments, such as ground, obstacles, props, enemies, etc.
+* **Test game levels:** Users can test the game levels they have just edited on the website and can check if the objects and environmental settings are correct.
+* **Share game levels:** Users can share the game levels they have just edited with others, allowing them to test and play on the website as well.
+* **Browse other players' shared game levels:** Users can browse other players' shared game levels on the website and can test and play them.
+
+## Getting Started
+[Visit Unique](https://unique-game-editor.web.app/)
+
+### Home
+List the steps to use the website and provide relevant code examples.
+
+### Sign In / Sign Up
+List the steps to use the website and provide relevant code examples.
+
+### Game Page
+
+<img src="https://github.com/Pinkowo/Unique/blob/main/images/operate.png" width = "20%" height = "20%" alt="operate" align=center />
+
+|Left Arrow Key |Right Arrow Key|   Blank Key   |
+|:-------------:|:-------------:|:-------------:|
+|  go left      |   go right     |   jump       |
+
+### Editor Page
+
+<a href='https://youtu.be/ZaE2XYmPVFU' target="_blank">
+<img src="https://github.com/Pinkowo/Unique/blob/main/images/editor.png" width = "50%" height = "50%" alt="editor" align=center />
+</a>
+
+## Technical Details
+The website is built using the following technologies:
+
+### Front-end:
+1. HTML
+2. SCSS
+3. JavaScript
+4. JSX
+5. Ajax
+6. Pixi.JS
+7. WebGL
+8. React
+    1. useState, useEffect
+    2. Link, useNavigate, useLocation
+9. Webpack
+10. Babel
+### Back-end:
+1. Firebase Hosting
+2. Firebase Authentication
+    1. signInWithEmailAndPassword
+    2. signInWithPopup, GoogleAuthProvider
+    3. onAuthStateChanged
+3. Cloud Firestore
+    1. getDoc, getDocs, collection
+    2. updateDoc, setDoc
+    3. deleteDoc
+    4. writeBatch
+    5. query, where
+
+
+## System Architecture
+List the system architecture diagram and relevant description of the website.
+
+## Database (NoSQL)
+
+<img src="https://github.com/Pinkowo/Unique/blob/main/images/firebase-1.png" width = "50%" height = "50%" alt="firestore" align=center />
+<img src="https://github.com/Pinkowo/Unique/blob/main/images/firebase-2.png" width = "50%" height = "50%" alt="firestore" align=center />
+
+## Contact Us
+Provide instructions for contacting the project team, such as how to submit questions and how to contact the project manager.
+
