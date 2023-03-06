@@ -16,15 +16,15 @@ List the steps to use the website and provide relevant code examples.
 ### Sign In / Sign Up
 List the steps to use the website and provide relevant code examples.
 
-### Game Page
+### Game
 
-<img src="https://github.com/Pinkowo/Unique/blob/main/images/operate.png" width = "20%" height = "20%" alt="operate" align=center />
+<img src="https://github.com/Pinkowo/Unique/blob/main/images/operate.png" width = "30%" height = "30%" alt="operate" align=center />
 
 |Left Arrow Key |Right Arrow Key|   Blank Key   |
 |:-------------:|:-------------:|:-------------:|
 |  go left      |   go right     |   jump       |
 
-### Editor Page
+### Editor
 
 <a href='https://youtu.be/ZaE2XYmPVFU' target="_blank">
 <img src="https://github.com/Pinkowo/Unique/blob/main/images/editor.png" width = "50%" height = "50%" alt="editor" align=center />
@@ -37,15 +37,18 @@ The website is built using the following technologies:
 1. HTML
 2. SCSS
 3. JavaScript
-4. JSX
-5. Ajax
-6. Pixi.JS
-7. WebGL
-8. React
+    1. Pixi.JS
+    2. JSX
+    3. Ajax
+4. WebGL
+5. React
     1. useState, useEffect
     2. Link, useNavigate, useLocation
-9. Webpack
-10. Babel
+6. Webpack
+    1. BrowserRouter
+    2. Babel
+    3. Dotenv
+7. SPA
 ### Back-end:
 1. Firebase Hosting
 2. Firebase Authentication
