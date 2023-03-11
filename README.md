@@ -5,7 +5,7 @@ Unique is an online game editor that allows users to create their games by click
 * **Edit game levels:** Users can edit game levels directly on the website and can set up various objects and environments, such as ground, obstacles, props, enemies, etc.
 * **Test game levels:** Users can test the game levels they have just edited on the website and can check if the objects and environmental settings are correct.
 * **Share game levels:** Users can share the game levels they have just edited with others, allowing them to test and play on the website as well.
-* **Browse other players' shared game levels:** Users can browse other players' shared game levels on the website and can test and play them.
+* **Play other players' shared game levels:** Users can play other players' shared game levels on the homepage.
 
 ## Getting Started
 [Visit Unique](https://unique-game-editor.web.app/)
@@ -39,8 +39,9 @@ The website is built using the following technologies:
 3. JavaScript
     1. JSX
     2. Ajax
-4.Pixi.JS
-    1. WebGL
+4. Pixi.JS
+    1. Canvas
+    2. WebGL
 5. React
     1. useState, useEffect
     2. Link, useNavigate, useLocation
