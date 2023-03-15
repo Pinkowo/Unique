@@ -11,10 +11,10 @@ Unique is an online game editor that allows users to create their games by click
 [Visit Unique](https://unique-game-editor.web.app/)
 
 ### Home
-List the steps to use the website and provide relevant code examples.
+<img src="https://github.com/Pinkowo/Unique/blob/main/images/1fpJdTJ2Y1.gif" width = "50%" height = "50%" alt="sign in" align=center />
 
 ### Sign In / Sign Up
-List the steps to use the website and provide relevant code examples.
+<img src="https://github.com/Pinkowo/Unique/blob/main/images/signin.png" width = "50%" height = "50%" alt="sign in" align=center />
 
 ### Game
 
@@ -63,15 +63,11 @@ The website is built using the following technologies:
     4. writeBatch
     5. query, where
 
-
-## System Architecture
-List the system architecture diagram and relevant description of the website.
-
 ## Database (NoSQL)
 
 <img src="https://github.com/Pinkowo/Unique/blob/main/images/firebase-1.png" width = "50%" height = "50%" alt="firestore" align=center />
 <img src="https://github.com/Pinkowo/Unique/blob/main/images/firebase-2.png" width = "50%" height = "50%" alt="firestore" align=center />
 
 ## Contact Us
-Provide instructions for contacting the project team, such as how to submit questions and how to contact the project manager.
+[Click here to see my Resume](https://www.canva.com/design/DAFczXi1Jtw/-odi-ZyvcO8B_bdqerXKeg/view?utm_content=DAFczXi1Jtw&utm_campaign=designshare&utm_medium=link2&utm_source=sharebutton)
 
