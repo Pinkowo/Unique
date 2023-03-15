@@ -11,7 +11,7 @@ Unique is an online game editor that allows users to create their games by click
 [Visit Unique](https://unique-game-editor.web.app/)
 
 ### Home
-<img src="https://github.com/Pinkowo/Unique/blob/main/images/1fpJdTJ2Y1.gif" width = "50%" height = "50%" alt="sign in" align=center />
+<img src="https://github.com/Pinkowo/Unique/blob/main/images/1fpJdTJ2Y1.gif" width = "50%" height = "50%" alt="home" align=center />
 
 ### Sign In / Sign Up
 <img src="https://github.com/Pinkowo/Unique/blob/main/images/signin.png" width = "50%" height = "50%" alt="sign in" align=center />
