@@ -71,11 +71,11 @@ export const SaveBtn = (props) => {
     function saveData() {
         const uid = props.user.uid;
         const projectId = location.pathname.split('/')[2];
-        let chara = { x: props.items[3].x, y: props.items[3].y };
-        let door = { x: props.items[4].x, y: props.items[4].y };
-        let map = { w: props.items[0].w, h: props.items[0].h };
-        let stars = props.items[1].children;
-        let walls = props.items[2].children;
+        let chara = { x: props.items.chara.x, y: props.items.chara.y };
+        let door = { x: props.items.door.x, y: props.items.door.y };
+        let map = { w: props.items.boundInfo.w, h: props.items.boundInfo.h };
+        let stars = props.items.stars.children;
+        let walls = props.items.walls.children;
         let starMinNum = parseInt(document.getElementById('input-star-num').value, 10);
         if (starMinNum > stars.length) starMinNum = stars.length;
         let name = document.getElementById('input-project-name').value;

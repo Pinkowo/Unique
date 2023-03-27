@@ -1,10 +1,11 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 
 export const Input = props => {
     const [msg, useMsg] = useState('');
     const [display, useDisplay] = useState('none');
     const [type, useType] = useState(props.type);
     const [change, useChange] = useState(false);
+    const [value, setValue] = useState('');
 
     const title = props.type.charAt(0).toUpperCase() + props.type.substring(1);
     let placeholder;
@@ -16,6 +17,12 @@ export const Input = props => {
 
     if (props.type === 'name')
         placeholder = 'Unique';
+
+    useEffect(() => {
+        if (props.value) {
+            setValue(props.value);
+        }
+    }, []);
 
     function handleBlur(e) {
         useChange(false);
@@ -59,11 +66,12 @@ export const Input = props => {
                 <input
                     type={type == 'name' ? 'text' : type}
                     name={props.type}
+                    value={value}
                     autoComplete="on"
                     placeholder={placeholder}
                     onBlur={handleBlur}
                     onFocus={() => { useDisplay('none') }}
-                    onChange={e => { useChange(true); props.handleChange(e); }}
+                    onChange={e => { setValue(e.target.value); useChange(true); props.handleChange(e); }}
                     required
                 />
                 <Eyes type={props.type} click={type => { useType(type) }} />

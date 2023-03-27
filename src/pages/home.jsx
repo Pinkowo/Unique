@@ -1,3 +1,85 @@
+// import React, { useState, useEffect, useContext } from 'react';
+// import { Link } from "react-router-dom";
+// import GamePage from './game.jsx';
+// import { db } from '../auth.js';
+// import { collection, getDocs, query, where } from "firebase/firestore";
+// import { UserContext } from '../index.js';
+
+// const HomePage = () => {
+//     const user = useContext(UserContext);
+//     const [value, setValue] = useState({
+//         finished: false,
+//         userId: '',
+//         userName: '',
+//         projectId: '',
+//         projectName: ''
+//     });
+//     useEffect(() => {
+//         const takeData = async () => {
+//             let uids = [];
+//             let projects = [];
+//             const users = await getDocs(collection(db, "user"));
+//             users.forEach(doc => {
+//                 if (doc.data().projectNum > 0) uids.push({ uid: doc.id, name: doc.data().name });
+//             });
+
+//             do {
+//                 const randomUserIndex = Math.floor(Math.random() * uids.length);
+//                 const user = uids[randomUserIndex];
+
+//                 const q = query(collection(db, "user", user.uid, 'project'), where("release", "==", true));
+//                 const querySnapshot = await getDocs(q);
+//                 querySnapshot.forEach((doc) => {
+//                     projects.push({ pid: doc.id, pname: doc.data().name });
+//                 });
+//                 if (projects.length == 0) {
+//                     uids.splice(randomUserIndex, 1);
+//                 } else {
+//                     const randomProjectIndex = Math.floor(Math.random() * projects.length);
+//                     const project = projects[randomProjectIndex];
+//                     setValue({
+//                         finished: true,
+//                         userId: user.uid,
+//                         userName: user.name,
+//                         projectId: project.pid,
+//                         projectName: project.pname
+//                     });
+//                 }
+//             } while (projects.length === 0 || uids.length === 0);
+//         }
+//         takeData()
+//             .catch((err) => {
+//                 console.log(err);
+//             });
+//     }, []);
+//     return (
+//         <div className="container home">
+//             {value.projectId !== '' && (
+//                 <GamePage uid={value.userId} projectId={value.projectId} />)}
+//             <div className='home-panel'>
+//                 <Info gameName={value.projectName} authorName={value.userName} />
+//                 <Keyboard />
+//                 <div className='home-btn'>
+//                     {value.finished &&
+//                         <div className='home-btn-play'>
+//                             <Link to={value.userId + '/' + value.projectId}>
+//                                 Play
+//                             </Link>
+//                         </div>}
+//                     {!user &&
+//                         <div className='home-btn-signup'>
+//                             <Link to={`/signup`}>
+//                                 Sign Up
+//                             </Link>
+//                         </div>}
+//                 </div>
+//             </div>
+//         </div>
+//     );
+// }
+
+// export default HomePage;
+
 import React, { useState, useEffect } from 'react';
 import { Link } from "react-router-dom";
 import GamePage from './game.jsx';
@@ -6,6 +88,7 @@ import { collection, getDocs, query, where } from "firebase/firestore";
 
 const HomePage = (props) => {
     const [value, setValue] = useState({
+        finished: false,
         userid: '',
         userName: '',
         projectId: '',
@@ -35,6 +118,7 @@ const HomePage = (props) => {
                     const randomProjectIndex = Math.floor(Math.random() * projects.length);
                     const project = projects[randomProjectIndex];
                     setValue({
+                        finished: true,
                         userid: user.uid,
                         userName: user.name,
                         projectId: project.pid,
@@ -56,11 +140,12 @@ const HomePage = (props) => {
                 <Info gameName={value.projectName} authorName={value.userName} />
                 <Keyboard />
                 <div className='home-btn'>
-                    <div className='home-btn-play'>
-                        <Link to={value.userid + '/' + value.projectId}>
-                            Play
-                        </Link>
-                    </div>
+                    {value.finished &&
+                        <div className='home-btn-play'>
+                            <Link to={value.userid + '/' + value.projectId}>
+                                Play
+                            </Link>
+                        </div>}
                     {!props.user &&
                         <div className='home-btn-signup'>
                             <Link to={`/signup`}>

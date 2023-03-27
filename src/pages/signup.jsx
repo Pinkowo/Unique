@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import { Link } from "react-router-dom";
 import { Input, FormBtn, OtherFormBtn } from '../components/form.jsx';
 import { auth, db } from '../auth.js';

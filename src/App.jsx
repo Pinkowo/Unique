@@ -32,8 +32,3 @@ const App = (props) => {
     )
 }
 export default App;
-
-/*
-    <Route path="/favorite" element={<FavoritePage />} />
-    <Route path="/play/:author/:game" element={<GamePage />} />
-*/

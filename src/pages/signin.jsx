@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import { Link } from "react-router-dom";
 import { Input, FormBtn, OtherFormBtn } from '../components/form.jsx';
 import { auth, db } from '../auth.js';
@@ -8,7 +8,7 @@ import { doc, setDoc, getDoc } from "firebase/firestore";
 const SignInPage = (props) => {
     const [email, useEmail] = useState(false);
     const [password, usePassword] = useState(false);
-    const [className, useClassName] = useState('form-btn-disabled');
+    const [className, useClassName] = useState('form-btn');
     const [errMsg, useErrMsg] = useState('');
     const [display, useDisplay] = useState('none');
     const provider = new GoogleAuthProvider();
@@ -17,7 +17,7 @@ const SignInPage = (props) => {
         if (props.user) {
             location.href = "/projects";
         }
-    }, []);
+    }, [props.user]);
 
     const handleGoogleLogin = () => {
         signInWithPopup(auth, provider)
@@ -98,8 +98,8 @@ const SignInPage = (props) => {
                     {errMsg}
                 </p>
                 <form onSubmit={handleSubmit}>
-                    <Input type='email' email={email} handleChange={handleEmailChange} />
-                    <Input type='password' password={password} handleChange={handlePasswordChange} />
+                    <Input type='email' email={email} handleChange={handleEmailChange} value='test@gmail.com' />
+                    <Input type='password' password={password} handleChange={handlePasswordChange} value='test12345' />
                     <div className='form-link-pw'>
                         <Link to="/signup">
                             Forgot password?
