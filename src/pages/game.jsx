@@ -526,6 +526,8 @@ class GamePage extends React.Component {
     }
 
     componentWillUnmount() {
+        document.onkeyup = null;
+        document.onkeydown = null;
         document.getElementById("game-window").remove();
         location.reload();
     }
